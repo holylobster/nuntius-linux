@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.holylobster.nuntius
+Exec=@bindir@/nuntius --gapplication-service

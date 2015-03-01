@@ -1,0 +1,16 @@
+[Desktop Entry]
+Name=Nuntius
+GenericName=Nuntius
+X-GNOME-FullName=Nuntius
+Comment=Get notifications from the phone or tablet
+Keywords=notifications;
+Exec=nuntius
+Terminal=false
+Type=Application
+Icon=nuntius
+Categories=GNOME;GTK;Utility;
+StartupNotify=true
+NoDisplay=true
+DBusActivatable=true
+X-GNOME-Autostart-enabled=true
+X-GNOME-UsesNotifications=true
