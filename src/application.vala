@@ -213,8 +213,8 @@ public class Application : GLib.Application {
     }
 
     private bool on_try_to_connect_devices() {
-        handle_managed_objects(false);
         connect_devices_id = 0;
+        handle_managed_objects(false);
 
         return false;
     }
