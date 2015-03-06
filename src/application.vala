@@ -72,6 +72,10 @@ public class BluezProfile : Object {
         }
     }
 
+    public bool has_any_device_connected() {
+        return connections.size() > 0;
+    }
+
     public bool get_device_connected(ObjectPath device) {
         return connections.get(device) != null;
     }
@@ -192,8 +196,10 @@ public class Application : GLib.Application {
             }
         }
 
-        // try to connect to the paired device every few seconds
-        connect_devices_id = Timeout.add_seconds(5, on_try_to_connect_devices);
+        if (!profile.has_any_device_connected()) {
+            // try to connect to the paired device every few seconds
+            connect_devices_id = Timeout.add_seconds(5, on_try_to_connect_devices);
+        }
     }
 
     private bool on_try_to_connect_devices() {
