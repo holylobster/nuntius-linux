@@ -17,14 +17,6 @@
 
 namespace Nuntius {
 
-[DBus (name = "org.freedesktop.DBus.ObjectManager")]
-public interface DBusObjectManager : Object {
-    public abstract HashTable<ObjectPath, HashTable<string, HashTable<string, Variant>>> get_managed_objects() throws DBusError, IOError;
-
-    public signal void interfaces_added(ObjectPath path, HashTable<string, HashTable<string, Variant>> interfaces);
-    public signal void interfaces_removed(ObjectPath path,  string[] interfaces);
-}
-
 [DBus (name = "org.bluez.Device1")]
 public interface BluezDeviceBus : Object {
     public abstract async void connect_profile(string UUID) throws DBusError, IOError;
@@ -134,14 +126,15 @@ public class Application : GLib.Application {
             profile_manager.register_profile(profile_path, "00001101-0000-1000-8000-00805f9b34fb", options);
             print("profile registered\n");
 
-            manager = Bus.get_proxy_sync(BusType.SYSTEM, "org.bluez", "/");
+            manager = new DBusObjectManagerClient.for_bus_sync(BusType.SYSTEM, DBusObjectManagerClientFlags.NONE,
+                                                               "org.bluez", "/", null, null);
             print("obtained bluez proxy\n");
 
             handle_managed_objects(true);
 
             // check interfaces added dynamically
-            manager.interfaces_added.connect(interfaces_added);
-            manager.interfaces_removed.connect(interfaces_removed);
+            manager.interface_added.connect(interface_added);
+            manager.interface_removed.connect(interface_removed);
         } catch (Error e) {
             warning("%s", e.message);
         }
@@ -151,24 +144,18 @@ public class Application : GLib.Application {
         base.activate();
     }
 
-    private async void connect_interfaces(ObjectPath path, HashTable<string, HashTable<string, Variant>> interfaces, bool dump) {
-        if (dump) {
-            print("added: [%s]\n", path);
-            interfaces.foreach((iface, props) => {
-                if (iface.has_prefix("org.freedesktop.DBus")) {
-                    // skip dbus stuff
-                    return;
-                }
+    private async void connect_interface(ObjectPath path, DBusInterface iface, bool dump) {
+        var name = iface.get_info().name;
 
-                print("  %s\n", iface);
-                props.foreach((key, val) => {
-                    print("     %s: %s\n", key, val.print(false));
-                });
-            });
+        if (dump) {
+            if (!name.has_prefix("org.freedesktop.DBus")) {
+                print("added: [%s]\n", path);
+                print("  %s\n", iface.get_info().name);
+            }
         }
 
         // try to get the device
-        if (interfaces.get("org.bluez.Device1") != null && !profile.get_device_connected(path)) {
+        if (name == "org.bluez1.Device" && !profile.get_device_connected(path)) {
             try {
                 BluezDeviceBus device = Bus.get_proxy_sync(BusType.SYSTEM, "org.bluez", path);
 
@@ -186,26 +173,23 @@ public class Application : GLib.Application {
         }
     }
 
-    private void interfaces_added(ObjectPath path, HashTable<string, HashTable<string, Variant>> interfaces) {
-        connect_interfaces(path, interfaces, true);
+    private void interface_added(DBusObjectManager manager, DBusObject object, DBusInterface iface) {
+        connect_interface(new ObjectPath(object.get_object_path()), iface, true);
     }
 
-    private void interfaces_removed(ObjectPath path,  string[] interfaces) {
-        print("removed: [%s]\n", path);
-        foreach (var iface in interfaces) {
-            print("  %s\n", iface);
-        }
+    private void interface_removed(DBusObjectManager manager, DBusObject object, DBusInterface iface) {
+        print("removed: [%s]\n", object.get_object_path());
+        print("  %s\n", iface.get_info().name);
     }
 
-    private void handle_managed_objects(bool dump) {
-        try {
-            var objects = manager.get_managed_objects();
+    private async void handle_managed_objects(bool dump) {
+        var objects = manager.get_objects();
 
-            objects.foreach((path, ifaces) => {
-                connect_interfaces(path, ifaces, dump);
-            });
-        } catch (Error e) {
-            warning("%s", e.message);
+        foreach (DBusObject o in objects) {
+            foreach (DBusInterface iface in o.get_interfaces()) {
+                yield connect_interface(new ObjectPath(o.get_object_path()),
+                                        iface, dump);
+            }
         }
 
         // try to connect to the paired device every few seconds
