@@ -23,3 +23,7 @@ If you have suggestions on how to improve it we are very open... but... we think
  * /var/log/messages gives also some information about bluetoothd if you do not run it directly
  * run "sudo btmon > btmon.log" to get information from the devices that try to connect to the computer
    * This is very useful to see to which uuid is trying to connect and what kind of errors it gets
+
+##Packages
+
+* [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
