@@ -2,7 +2,7 @@
 Name=Nuntius
 GenericName=Nuntius
 X-GNOME-FullName=Nuntius
-_Comment=Get notifications from the phone or tablet
+_Comment=Deliver notifications from your phone or tablet to your computer over Bluetooth
 _Keywords=notifications;
 Exec=nuntius
 Terminal=false
