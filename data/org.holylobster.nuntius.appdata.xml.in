@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Copyright 2015 Ignacio Casal Quinteiro <icq@gnome.org> -->
+<application>
+  <id type="desktop">org.holylobster.nuntius.desktop</id>
+  <metadata_license>CC0</metadata_license>
+  <project_license>GPL-2.0+</project_license>
+  <description>
+    <_p>
+      Nuntius delivers notifications from your phone or tablet to your computer
+      over Bluetooth.
+    </_p>
+    <_p>
+      To use Nuntius you will need to install a companion tool on your phone or
+      tablet and pair it via Bluetooth.
+    </_p>
+  </description>
+  <screenshots>
+    <screenshot type="default">https://raw.githubusercontent.com/holylobster/nuntius-android/master/store-stuff/play-store-feature.jpg</screenshot>
+  </screenshots>
+  <url type="homepage">https://github.com/orgs/holylobster</url>
+  <updatecontact>icq@gnome.org</updatecontact>
+</application>

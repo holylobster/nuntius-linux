@@ -14,6 +14,12 @@ dist_noinst_DATA = data/org.holylobster.nuntius.desktop.in
 autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(applications_DATA)
 
+# appdata file
+appdatadir = $(datadir)/appdata
+appdata_DATA = $(appdata_in_files:.xml.in=.xml)
+appdata_in_files = data/org.holylobster.nuntius.appdata.xml.in
+@INTLTOOL_XML_RULE@
+
 # DBus service file
 servicedir = $(datadir)/dbus-1/services
 service_DATA = data/org.holylobster.nuntius.service
@@ -90,9 +96,13 @@ install-data-local: data-icons-install-icons
 uninstall-local: data-icons-uninstall-icons
 
 EXTRA_DIST = \
+	$(applications_DATA) \
+	$(appdata_in_files) \
+	data/org.holylobster.nuntius.appdata.xml \
 	$(addprefix data/icons/,$(data_icons_public_icons))
 
 CLEANFILES = \
+	$(appdata_DATA) \
 	$(applications_DATA) \
 	$(service_DATA)
 
