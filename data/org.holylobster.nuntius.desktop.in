@@ -2,8 +2,8 @@
 Name=Nuntius
 GenericName=Nuntius
 X-GNOME-FullName=Nuntius
-Comment=Get notifications from the phone or tablet
-Keywords=notifications;
+_Comment=Get notifications from the phone or tablet
+_Keywords=notifications;
 Exec=nuntius
 Terminal=false
 Type=Application

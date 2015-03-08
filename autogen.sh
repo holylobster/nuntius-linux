@@ -13,9 +13,16 @@ if test -z $AUTORECONF; then
     exit 1
 fi
 
+INTLTOOLIZE=`which intltoolize`
+if test -z $INTLTOOLIZE; then
+    echo "*** No intltoolize found, please install the intltool package ***"
+    exit 1
+fi
+
 git submodule update --init --recursive
 
-autoreconf --force --install --verbose
+autopoint --force || exit $?
+AUTOPOINT='intltoolize --automake --copy' autoreconf --force --install --verbose
 
 cd $OLDDIR
 test -n "$NOCONFIGURE" || "$srcdir/configure" "$@"

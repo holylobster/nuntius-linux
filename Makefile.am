@@ -1,8 +1,14 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
+SUBDIRS = po
+
 # desktop file
+# (we can't use INTLTOOL_DESKTOP_RULE here due to lp#605826)
+%.desktop: %.desktop.in
+	$(AM_V_GEN) $(MKDIR_P) $(dir $@); LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
 applicationsdir = $(datadir)/applications
 applications_DATA = data/org.holylobster.nuntius.desktop
+dist_noinst_DATA = data/org.holylobster.nuntius.desktop.in
 
 # autostart file
 autostartdir = $(sysconfdir)/xdg/autostart
@@ -11,7 +17,7 @@ autostart_DATA = $(applications_DATA)
 # DBus service file
 servicedir = $(datadir)/dbus-1/services
 service_DATA = data/org.holylobster.nuntius.service
-dist_noinst_DATA = data/org.holylobster.nuntius.service.in
+dist_noinst_DATA += data/org.holylobster.nuntius.service.in
 
 data/org.holylobster.nuntius.service: data/org.holylobster.nuntius.service.in Makefile
 	$(AM_V_GEN) $(MKDIR_P) $(dir $@); sed -e "s|\@bindir\@|$(bindir)|" $< > $@
@@ -46,6 +52,8 @@ data-icons-uninstall-icons:
 	done;
 
 AM_CPPFLAGS = \
+	-DGETTEXT_PACKAGE=\""$(GETTEXT_PACKAGE)"\" \
+	-DGNOMELOCALEDIR=\""$(localedir)"\" \
 	-DDATADIR=\""$(datadir)"\"
 
 AM_VALAFLAGS = \
@@ -82,10 +90,10 @@ install-data-local: data-icons-install-icons
 uninstall-local: data-icons-uninstall-icons
 
 EXTRA_DIST = \
-	$(applications_DATA) \
 	$(addprefix data/icons/,$(data_icons_public_icons))
 
 CLEANFILES = \
+	$(applications_DATA) \
 	$(service_DATA)
 
 MAINTAINERCLEANFILES = \
