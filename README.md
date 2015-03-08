@@ -6,7 +6,7 @@ Nuntius delivers notifications from your phone or tablet to your computer over B
 
 Nuntius is an Open Source project from HolyLobster.
 
-To use Nuntius you will need to install a companion tool on your phone or table and pair it via Bluetooth.
+To use Nuntius you will need to install a companion tool on your phone or tablet and pair it via Bluetooth.
 
 For more information on the project and the companion tools to install on the computer check https://github.com/holylobster
 
@@ -26,4 +26,5 @@ If you have suggestions on how to improve it we are very open... but... we think
 
 ##Packages
 
+* Fedora: yum install nuntius
 * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
