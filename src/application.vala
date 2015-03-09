@@ -134,7 +134,7 @@ public class Application : GLib.Application {
                                                                "org.bluez", "/", null, null);
             print("obtained bluez proxy\n");
 
-            handle_managed_objects(true);
+            handle_managed_objects.begin(true);
 
             // check interfaces added dynamically
             manager.interface_added.connect(interface_added);
@@ -183,7 +183,7 @@ public class Application : GLib.Application {
     }
 
     private void interface_added(DBusObjectManager manager, DBusObject object, DBusInterface iface) {
-        connect_interface(object, iface, true);
+        connect_interface.begin(object, iface, true);
     }
 
     private void interface_removed(DBusObjectManager manager, DBusObject object, DBusInterface iface) {
@@ -208,7 +208,7 @@ public class Application : GLib.Application {
 
     private bool on_try_to_connect_devices() {
         connect_devices_id = 0;
-        handle_managed_objects(false);
+        handle_managed_objects.begin(false);
 
         return false;
     }
