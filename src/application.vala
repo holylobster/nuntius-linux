@@ -148,18 +148,23 @@ public class Application : GLib.Application {
         base.activate();
     }
 
-    private async void connect_interface(ObjectPath path, DBusInterface iface, bool dump) {
-        var name = iface.get_info().name;
+    private async void connect_interface(DBusObject object, DBusInterface iface, bool dump) {
+        if (!(iface is DBusProxy)) {
+            return;
+        }
+
+        var name = (iface as DBusProxy).get_interface_name();
+        var path = new ObjectPath(object.get_object_path());
 
         if (dump) {
             if (!name.has_prefix("org.freedesktop.DBus")) {
                 print("added: [%s]\n", path);
-                print("  %s\n", iface.get_info().name);
+                print("  %s\n", name);
             }
         }
 
         // try to get the device
-        if (name == "org.bluez1.Device" && !profile.get_device_connected(path)) {
+        if (name == "org.bluez.Device1" && !profile.get_device_connected(path)) {
             try {
                 BluezDeviceBus device = Bus.get_proxy_sync(BusType.SYSTEM, "org.bluez", path);
 
@@ -178,7 +183,7 @@ public class Application : GLib.Application {
     }
 
     private void interface_added(DBusObjectManager manager, DBusObject object, DBusInterface iface) {
-        connect_interface(new ObjectPath(object.get_object_path()), iface, true);
+        connect_interface(object, iface, true);
     }
 
     private void interface_removed(DBusObjectManager manager, DBusObject object, DBusInterface iface) {
@@ -191,8 +196,7 @@ public class Application : GLib.Application {
 
         foreach (DBusObject o in objects) {
             foreach (DBusInterface iface in o.get_interfaces()) {
-                yield connect_interface(new ObjectPath(o.get_object_path()),
-                                        iface, dump);
+                yield connect_interface(o, iface, dump);
             }
         }
 
