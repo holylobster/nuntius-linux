@@ -25,6 +25,11 @@ If you have suggestions on how to improve it we are very open... but... we think
    * This is very useful to see to which uuid is trying to connect and what kind of errors it gets
 
 ##Packages
-
+You can install Nuntius from:
 * Fedora: yum install nuntius
 * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
+
+You will need to install Nuntius also on your phone or tablet.
+
+At the moment Nuntius is available for Android, check here:
+* https://github.com/holylobster/nuntius-android
