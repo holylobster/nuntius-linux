@@ -1,0 +1,16 @@
+=============
+nuntius 0.1.0
+=============
+
+New Features and Fixes
+======================
+- Added appdata
+- Added translation support
+- Use DBusObjectManager instead of custom implementation
+- Misc bugfixes
+
+=============
+nuntius 0.0.1
+=============
+
+Initial Release.

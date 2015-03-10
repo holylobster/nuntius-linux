@@ -15,15 +15,6 @@ You may have questions on the icon. Nice shot.
 In fact most of the Nuntius development time has been spent on the icon design concept.
 If you have suggestions on how to improve it we are very open... but... we think it is hardly possible to do better than this.
 
-##Some tips to debug
- * Launch the bluetooth dameon as "sudo  /usr/libexec/bluetooth/bluetoothd -d -n"
- * Using bluetoothctl
-   * I had to set "agent on", "default-agent" and "trust 98:D6:F7:73:03:F1"
-   * Having it running it will provide some information
- * /var/log/messages gives also some information about bluetoothd if you do not run it directly
- * run "sudo btmon > btmon.log" to get information from the devices that try to connect to the computer
-   * This is very useful to see to which uuid is trying to connect and what kind of errors it gets
-
 ##Packages
 You can install Nuntius from:
 * Fedora: yum install nuntius
@@ -33,3 +24,13 @@ You will need to install Nuntius also on your phone or tablet.
 
 At the moment Nuntius is available for Android, check here:
 * https://github.com/holylobster/nuntius-android
+
+##Some tips to debug
+ * Launch the bluetooth dameon as "sudo  /usr/libexec/bluetooth/bluetoothd -d -n"
+ * Using bluetoothctl
+   * I had to set "agent on", "default-agent" and "trust 98:D6:F7:73:03:F1"
+   * Having it running it will provide some information
+ * /var/log/messages gives also some information about bluetoothd if you do not run it directly
+ * run "sudo btmon > btmon.log" to get information from the devices that try to connect to the computer
+   * This is very useful to see to which uuid is trying to connect and what kind of errors it gets
+

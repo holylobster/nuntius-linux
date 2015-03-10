@@ -1,6 +1,6 @@
 AC_PREREQ(2.63)
 
-AC_INIT([nuntius], [0.0.1])
+AC_INIT([nuntius], [0.1.0])
 
 dnl http://people.gnome.org/~walters/docs/build-api.txt
 dnl We don't support separate builddir when building from git
