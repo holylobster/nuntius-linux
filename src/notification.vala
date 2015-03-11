@@ -24,6 +24,7 @@ public class Notification : Object {
     private string _title;
     private string _body;
     private BytesIcon _icon;
+    private bool _read;
 
     public string id {
         get { return _id; }
@@ -55,7 +56,13 @@ public class Notification : Object {
         set construct { _icon = value; }
     }
 
-    public Notification(string id, string package_name, string app_name, string title, string body, BytesIcon icon) {
+    public bool read {
+        get { return _read; }
+        set { _read = value; }
+        default = false;
+    }
+
+    public Notification(string id, string package_name, string app_name, string title, string? body, BytesIcon? icon) {
         Object(id: id, package_name: package_name, app_name: app_name, title: title, body: body, icon: icon);
     }
 

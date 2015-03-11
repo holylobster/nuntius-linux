@@ -10,7 +10,6 @@ Type=Application
 Icon=nuntius
 Categories=GNOME;GTK;Utility;
 StartupNotify=true
-NoDisplay=true
 DBusActivatable=true
 X-GNOME-Autostart-enabled=true
 X-GNOME-UsesNotifications=true

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-11 11:24+0100\n"
+"POT-Creation-Date: 2015-03-19 08:57+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,4 +37,16 @@ msgstr ""
 
 #: ../data/org.holylobster.nuntius.desktop.in.h:2
 msgid "notifications;"
+msgstr ""
+
+#: ../src/resources/ui/appslistpanel.ui.h:1
+msgid "Type to search"
+msgstr ""
+
+#: ../src/resources/ui/window.ui.h:1
+msgid "Nuntius"
+msgstr ""
+
+#: ../src/resources/ui/window.ui.h:2
+msgid "All Applications"
 msgstr ""

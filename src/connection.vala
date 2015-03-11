@@ -36,7 +36,7 @@ public class DeviceConnection : Object {
 
     public signal void notification_posted(Notification notification);
 
-    public signal void notification_removed(string id);
+    public signal void notification_removed(string id, string package_name);
 
     public DeviceConnection(ObjectPath device, Socket socket) {
         cancellable = new Cancellable();
@@ -124,8 +124,9 @@ public class DeviceConnection : Object {
                     foreach (var i in eventItems) {
                         var object = i.get_object();
                         var id = object.get_int_member("id").to_string();
+                        var package_name = object.get_string_member("packageName");
 
-                        notification_removed(id);
+                        notification_removed(id, package_name);
                     }
                     break;
                 case "listNotifications":

@@ -19,11 +19,26 @@ namespace Nuntius {
 
 public class NotificationApp : Object {
     private string _id;
+    private string _app_name;
+    private BytesIcon _icon;
+    private uint _unread_notifications;
     List<Notification> _notifications;
 
     public string id {
         get { return _id; }
         set construct { _id = value; }
+    }
+
+    public string app_name {
+        get { return _app_name; }
+    }
+
+    public BytesIcon icon {
+        get { return _icon; }
+    }
+
+    public uint unread_notifications {
+        get { return _unread_notifications; }
     }
 
     public List<Notification> notifications {
@@ -39,7 +54,46 @@ public class NotificationApp : Object {
     }
 
     public void add_notification(Notification notification) {
-        _notifications.append(notification);
+        _notifications.prepend(notification);
+
+        // Update the icon with the latest notification
+        if (_icon != notification.icon) {
+            _icon = notification.icon;
+            notify_property("icon");
+        }
+
+        if (_app_name != notification.app_name) {
+            _app_name = notification.app_name;
+            notify_property("app-name");
+        }
+
+        if (!notification.read) {
+            _unread_notifications++;
+            notify_property("unread-notifications");
+        }
+
+        notification.notify["read"].connect(() => {
+            if (notification.read) {
+                _unread_notifications--;
+            } else {
+                _unread_notifications++;
+            }
+
+            notify_property("unread-notifications");
+        });
+    }
+
+    public Notification get_notification(string id) {
+        Notification? n = null;
+
+        foreach (var notif in _notifications) {
+            if (notif.id == id) {
+                n = notif;
+                break;
+            }
+        }
+
+        return n;
     }
 }
 

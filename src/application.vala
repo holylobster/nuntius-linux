@@ -64,13 +64,12 @@ public class BluezProfile : Object {
 
         connection.notification_posted.connect((notification) => {
             var app = GLib.Application.get_default();
-            app.send_notification(notification.id,
-                                  notification.to_gnotification());
+            (app as Application).add_notification(notification);
         });
 
-        connection.notification_removed.connect((id) => {
+        connection.notification_removed.connect((id, package_name) => {
             var app = GLib.Application.get_default();
-            app.withdraw_notification(id);
+            (app as Application).mark_notification_read(id, package_name);
         });
     }
 
@@ -92,12 +91,21 @@ public class BluezProfile : Object {
     }
 }
 
-public class Application : GLib.Application {
+public class Application : Gtk.Application {
     Cancellable? cancellable;
     DBusObjectManager manager;
     BluezProfileManager? profile_manager;
     BluezProfile? profile;
     uint connect_devices_id;
+    bool first_activation;
+    Window window;
+    List<NotificationApp> _notification_apps;
+
+    public signal void notification_app_added(NotificationApp notification_app);
+
+    public List<NotificationApp> notification_apps {
+        get { return _notification_apps; }
+    }
 
     public Application() {
         Object(application_id: "org.holylobster.nuntius");
@@ -105,6 +113,8 @@ public class Application : GLib.Application {
 
     construct {
         cancellable = new Cancellable();
+        first_activation = true;
+        _notification_apps = new List<NotificationApp>();
     }
 
     protected override void dispose() {
@@ -126,6 +136,17 @@ public class Application : GLib.Application {
 
         // Since it works as a daemon keep a hold forever on the primary instance
         hold();
+
+        var css_provider = new Gtk.CssProvider();
+        try {
+            var file = File.new_for_uri("resource:///org/holylobster/nuntius/css/nuntius-style.css");
+            css_provider.load_from_file(file);
+        } catch (Error e) {
+            warning("loading css: %s", e.message);
+        }
+        Gtk.StyleContext.add_provider_for_screen(Gdk.Screen.get_default(),
+                                                 css_provider,
+                                                 Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
         profile = new BluezProfile(cancellable);
 
@@ -158,7 +179,25 @@ public class Application : GLib.Application {
         }
     }
 
+    private void ensure_window() {
+        if (window == null) {
+            window = new Window(this);
+            window.destroy.connect(() => {
+                window = null;
+            });
+        }
+    }
+
     protected override void activate() {
+        // We want it to start as a daemon and not showing the window from
+        // the beginning
+        if (!first_activation) {
+            ensure_window();
+            window.present();
+        }
+
+        first_activation = false;
+
         base.activate();
     }
 
@@ -225,6 +264,48 @@ public class Application : GLib.Application {
         handle_managed_objects.begin(false);
 
         return false;
+    }
+
+    public void add_notification(Notification notification) {
+        bool found = false;
+
+        foreach (var napp in _notification_apps) {
+            if (napp.id == notification.package_name) {
+                napp.add_notification(notification);
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            var napp = new NotificationApp(notification.package_name);
+            napp.add_notification(notification);
+            _notification_apps.prepend(napp);
+
+            notification_app_added(napp);
+        }
+
+        send_notification(notification.id,
+                          notification.to_gnotification());
+    }
+
+    public void mark_notification_read(string id, string package_name) {
+        Notification? notification = null;
+
+        foreach (var napp in _notification_apps) {
+            if (napp.id == package_name) {
+                notification = napp.get_notification(id);
+                break;
+            }
+        }
+
+        if (notification != null) {
+            withdraw_notification(notification.id);
+
+            if (!notification.read) {
+                notification.read = true;
+            }
+        }
     }
 }
 

@@ -25,12 +25,15 @@ AC_PROG_CC_STDC
 AC_PROG_INSTALL
 AM_PROG_VALAC([0.23.3])
 
+AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
+
 PKG_PROG_PKG_CONFIG
 
 PKG_CHECK_MODULES(NUNTIUS, [
     gio-2.0 >= 2.40
     gio-unix-2.0 >= 2.38
     glib-2.0 >= 2.38
+    gtk+-3.0 >= 3.10.0
     json-glib-1.0 >= 0.16.2
 ])
 

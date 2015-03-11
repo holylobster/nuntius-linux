@@ -1,0 +1,61 @@
+.nuntius-titlebar-left {
+    /* the horizontal padding confuses left_side_size_group, so we
+       add it as margin-left to the first button instead (in mainWindow.ui);
+       also set the vertical padding to 0 so the separator extends to the
+       bottom */
+    padding: 0 1px;
+}
+
+.nuntius-titlebar-left:dir(ltr),
+.nuntius-titlebar-right:dir(rtl) {
+    border-top-right-radius: 0;
+}
+
+.nuntius-titlebar-right:dir(ltr),
+.nuntius-titlebar-left:dir(rtl) {
+    border-top-left-radius: 0;
+}
+
+.nuntius-titlebar-separator {
+    border-image: linear-gradient(to bottom, @theme_bg_color, shade(@borders, 1.2));
+    border-image-width: 0 1px 0 0;
+    border-image-slice: 1;
+}
+
+.nuntius-titlebar-separator:backdrop {
+    border-image: none;
+    border-color: transparent;
+}
+
+NuntiusAppsListPanel.frame:dir(ltr) {
+  border-width: 0 1px 0 0;
+}
+
+NuntiusAppsListPanel.frame:dir(rtl) {
+  border-width: 0 0 0 1px;
+}
+
+.apps-list-view {
+  background-color: transparent;
+}
+
+.nuntius-notifications-unread {
+  border-style: none;
+  border-radius: 10px;
+  background-color: darker(@theme_selected_bg_color);
+  color: @theme_selected_fg_color;
+  padding: 1px 6px;
+}
+
+/* Primary toolbar with no line at top to avoid conflicts with frame border */
+NuntiusWindow .primary-toolbar.toolbar {
+  border-width: 0;
+  border-bottom-width: 1px;
+  border-style: solid;
+  border-color: @borders;
+}
+
+NuntiusNotificationsView .notification {
+  border-radius: 2px;
+  background-color: @theme_bg_color;
+}

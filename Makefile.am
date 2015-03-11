@@ -66,19 +66,33 @@ AM_VALAFLAGS = \
 	--target-glib=2.40 \
 	--pkg gio-2.0 \
 	--pkg gio-unix-2.0 \
+	--pkg gtk+-3.0 \
 	--pkg json-glib-1.0 \
-	--pkg posix
+	--pkg posix \
+	--gresources  $(top_srcdir)/src/resources/nuntius.gresource.xml
 
 bin_PROGRAMS = nuntius
 
+BUILT_SOURCES = \
+	src/resources.c
+
+resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir)/src/resources $(top_srcdir)/src/resources/nuntius.gresource.xml)
+src/resources.c: $(top_srcdir)/src/resources/nuntius.gresource.xml $(resource_files)
+	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/src/resources --generate-source $<
+
 VALA_SOURCES = \
 	src/application.vala \
+	src/appslistpanel.vala \
+	src/appslist.vala \
 	src/connection.vala \
 	src/notification.vala \
 	src/notificationapp.vala \
+	src/notificationsview.vala \
+	src/window.vala \
 	src/main.vala
 
 nuntius_SOURCES = \
+	$(BUILT_SOURCES) \
 	$(VALA_SOURCES) \
 	src/config.vapi
 
@@ -100,7 +114,9 @@ uninstall-local: data-icons-uninstall-icons
 EXTRA_DIST = \
 	$(applications_DATA) \
 	$(appdata_in_files) \
+	$(resource_files) \
 	data/org.holylobster.nuntius.appdata.xml \
+	src/resources/nuntius.gresource.xml \
 	$(addprefix data/icons/,$(data_icons_public_icons))
 
 CLEANFILES = \
