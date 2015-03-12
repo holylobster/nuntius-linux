@@ -1,7 +1,7 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Raphael Guttenberger <raphaelguttenberger@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
@@ -9,7 +9,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-03-11 11:24+0100\n"
 "PO-Revision-Date: 2015-03-11 18:29+0100\n"
-"Last-Translator: \n"
+"Last-Translator: Raphael Guttenberger <raphaelguttenberger@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
