@@ -17,13 +17,15 @@ If you have suggestions on how to improve it we are very open... but... we think
 
 ##Packages
 You can install Nuntius from:
-* Fedora: yum install nuntius
-* [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
+
+ * Fedora: yum install nuntius - as of today the packages did not reach the repositories yet, you can fetch the package from [Fedora Koji](http://koji.fedoraproject.org/koji/packageinfo?packageID=20047)
+ * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
 
 You will need to install Nuntius also on your phone or tablet.
 
-At the moment Nuntius is available for Android, check here:
-* https://github.com/holylobster/nuntius-android
+At the moment Nuntius is available for Android, check here
+
+ * https://github.com/holylobster/nuntius-android
 
 ##Some tips to debug
  * Launch the bluetooth dameon as "sudo  /usr/libexec/bluetooth/bluetoothd -d -n"
