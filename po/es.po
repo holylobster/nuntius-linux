@@ -1,0 +1,48 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Daniel Mustieles <daniel.mustieles@gmail.com>, 2015.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-03-11 11:24+0100\n"
+"PO-Revision-Date: 2015-03-12 11:41+0100\n"
+"Last-Translator: Daniel Mustieles <daniel.mustieles@gmail.com>\n"
+"Language-Team: Español; Castellano <gnome-es-list@gnome.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Gtranslator 2.91.6\n"
+
+#: ../data/org.holylobster.nuntius.appdata.xml.in.h:1
+msgid ""
+"Nuntius delivers notifications from your phone or tablet to your computer "
+"over Bluetooth."
+msgstr ""
+"Nuntius envía notificaciones desde su teléfono o tableta a su equipo "
+"mediante Bluetooth."
+
+#: ../data/org.holylobster.nuntius.appdata.xml.in.h:2
+msgid ""
+"To use Nuntius you will need to install a companion tool on your phone or "
+"tablet and pair it via Bluetooth."
+msgstr ""
+"Para usar Nuntius deberá instalar una herramienta complementaria en su "
+"teléfono o tableta y emparejarlo mediante Bluetooth."
+
+#: ../data/org.holylobster.nuntius.desktop.in.h:1
+msgid ""
+"Deliver notifications from your phone or tablet to your computer over "
+"Bluetooth"
+msgstr ""
+"Enviar notificaciones desde su teléfono o tableta a su equipo mediante "
+"Bluetooth"
+
+#: ../data/org.holylobster.nuntius.desktop.in.h:2
+msgid "notifications;"
+msgstr "notificaciones;"
