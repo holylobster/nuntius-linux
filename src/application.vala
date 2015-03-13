@@ -88,6 +88,10 @@ public class Application : GLib.Application {
     BluezProfile? profile;
     uint connect_devices_id;
 
+    const GLib.ActionEntry[] action_entries = {
+        { "button-clicked", null, "s" }
+    };
+
     public Application() {
         Object(application_id: "org.holylobster.nuntius");
     }

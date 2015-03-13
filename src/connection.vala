@@ -108,8 +108,17 @@ public class DeviceConnection : Object {
 
                             if (notification_object.has_member("text")) {
                                 var text = notification_object.get_string_member("text");
-
                                 notification.set_body(text);
+                            }
+
+                            if (notification_object.has_member("actions")) {
+                                var actions = notification_object.get_array_member("actions").get_elements();
+                                foreach (var j in actions) {
+                                    var action_object = j.get_object();
+                                    var action = action_object.get_string_member("id");
+                                    var label = action_object.get_string_member("label");
+                                    notification.add_button(label, "app.button-clicked::".concat(action));
+                                }
                             }
 
                             var app = GLib.Application.get_default();
