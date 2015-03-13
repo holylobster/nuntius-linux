@@ -27,6 +27,10 @@ At the moment Nuntius is available for Android, check here
 
  * https://github.com/holylobster/nuntius-android
 
+##Getting in touch
+We have an IRC channel: #nuntius on the irc.gnome.org server.
+Feel free to join and talk to us! Note that the channel is new and there are not many people (yet!) so be patient and hang around if you do not receive a reply immediately.
+
 ##Some tips to debug
  * Launch the bluetooth dameon as "sudo  /usr/libexec/bluetooth/bluetoothd -d -n"
  * Using bluetoothctl
