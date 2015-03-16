@@ -20,7 +20,7 @@ namespace Nuntius {
 public class Notification : Object {
     private string _id;
     private string _title;
-    private string _text;
+    private string _body;
     private BytesIcon _icon;
 
     public string id {
@@ -33,9 +33,9 @@ public class Notification : Object {
         set construct { _title = value; }
     }
 
-    public string text {
-        get { return _text; }
-        set construct { _text = value; }
+    public string body {
+        get { return _body; }
+        set construct { _body = value; }
     }
 
     public BytesIcon icon {
@@ -43,15 +43,15 @@ public class Notification : Object {
         set construct { _icon = value; }
     }
 
-    public Notification(string id, string title, string text, BytesIcon icon) {
-        Object(id: id, title: title, text: text, icon: icon);
+    public Notification(string id, string title, string body, BytesIcon icon) {
+        Object(id: id, title: title, body: body, icon: icon);
     }
 
     public GLib.Notification to_gnotification() {
         GLib.Notification notification = new GLib.Notification(title);
 
-        if (text != null) {
-            notification.set_body(text);
+        if (body != null) {
+            notification.set_body(body);
         }
 
         if (icon != null) {
