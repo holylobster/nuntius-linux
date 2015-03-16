@@ -89,6 +89,8 @@ public class DeviceConnection : Object {
                     break;
                 case "notificationPosted":
                     foreach (var i in eventItems) {
+                        Notification? notification = null;
+
                         var object = i.get_object();
                         var id = object.get_int_member("id").to_string();
 
@@ -100,20 +102,19 @@ public class DeviceConnection : Object {
                         var notification_object = object.get_object_member("notification");
                         if (notification_object.has_member("title")) {
                             var title = notification_object.get_string_member("title");
-
-                            var notification = new Notification(title);
-                            if (icon != null) {
-                                notification.set_icon(icon);
-                            }
+                            string? text = null;
 
                             if (notification_object.has_member("text")) {
-                                var text = notification_object.get_string_member("text");
-
-                                notification.set_body(text);
+                                text = notification_object.get_string_member("text");
                             }
 
+                            notification = new Notification(id, title, text, icon);
+                        }
+
+                        if (notification != null) {
                             var app = GLib.Application.get_default();
-                            app.send_notification(id, notification);
+                            app.send_notification(notification.id,
+                                                  notification.to_gnotification());
                         }
                     }
                     break;
