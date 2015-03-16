@@ -75,6 +75,7 @@ VALA_SOURCES = \
 	src/application.vala \
 	src/connection.vala \
 	src/notification.vala \
+	src/notificationapp.vala \
 	src/main.vala
 
 nuntius_SOURCES = \
