@@ -34,6 +34,10 @@ public class DeviceConnection : Object {
         get { return _device; }
     }
 
+    public signal void notification_posted(Notification notification);
+
+    public signal void notification_removed(string id);
+
     public DeviceConnection(ObjectPath device, Socket socket) {
         cancellable = new Cancellable();
         this.socket = socket;
@@ -109,12 +113,8 @@ public class DeviceConnection : Object {
                             }
 
                             notification = new Notification(id, title, text, icon);
-                        }
 
-                        if (notification != null) {
-                            var app = GLib.Application.get_default();
-                            app.send_notification(notification.id,
-                                                  notification.to_gnotification());
+                            notification_posted(notification);
                         }
                     }
                     break;
@@ -123,8 +123,7 @@ public class DeviceConnection : Object {
                         var object = i.get_object();
                         var id = object.get_int_member("id").to_string();
 
-                        var app = GLib.Application.get_default();
-                        app.withdraw_notification(id);
+                        notification_removed(id);
                     }
                     break;
                 case "listNotifications":

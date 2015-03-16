@@ -61,6 +61,17 @@ public class BluezProfile : Object {
                 print("removed connection for device '%s'\n", connection.device);
             }
         });
+
+        connection.notification_posted.connect((notification) => {
+            var app = GLib.Application.get_default();
+            app.send_notification(notification.id,
+                                  notification.to_gnotification());
+        });
+
+        connection.notification_removed.connect((id) => {
+            var app = GLib.Application.get_default();
+            app.withdraw_notification(id);
+        });
     }
 
     public void request_disconnection(ObjectPath device) {
