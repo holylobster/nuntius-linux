@@ -19,6 +19,7 @@ namespace Nuntius {
 
 public class Notification : Object {
     private string _id;
+    private string _package_name;
     private string _title;
     private string _body;
     private BytesIcon _icon;
@@ -26,6 +27,11 @@ public class Notification : Object {
     public string id {
         get { return _id; }
         set construct { _id = value; }
+    }
+
+    public string package_name {
+        get { return _package_name; }
+        set construct { _package_name = value; }
     }
 
     public string title {
@@ -43,8 +49,8 @@ public class Notification : Object {
         set construct { _icon = value; }
     }
 
-    public Notification(string id, string title, string body, BytesIcon icon) {
-        Object(id: id, title: title, body: body, icon: icon);
+    public Notification(string id, string package_name, string title, string body, BytesIcon icon) {
+        Object(id: id, package_name: package_name, title: title, body: body, icon: icon);
     }
 
     public GLib.Notification to_gnotification() {

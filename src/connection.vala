@@ -97,6 +97,7 @@ public class DeviceConnection : Object {
 
                         var object = i.get_object();
                         var id = object.get_int_member("id").to_string();
+                        var package_name = object.get_string_member("packageName");
 
                         BytesIcon icon = null;
                         if (object.has_member("icon")) {
@@ -112,7 +113,7 @@ public class DeviceConnection : Object {
                                 text = notification_object.get_string_member("text");
                             }
 
-                            notification = new Notification(id, title, text, icon);
+                            notification = new Notification(id, package_name, title, text, icon);
 
                             notification_posted(notification);
                         }
