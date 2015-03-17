@@ -124,6 +124,9 @@ public class Application : GLib.Application {
     protected override void startup() {
         base.startup();
 
+        // Since it works as a daemon keep a hold forever on the primary instance
+        hold();
+
         profile = new BluezProfile(cancellable);
 
         var profile_path = new ObjectPath(get_dbus_object_path() + "/Profile");

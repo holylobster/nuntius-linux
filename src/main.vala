@@ -33,7 +33,6 @@ public static int main(string[] args) {
     Unix.signal_add(Posix.SIGHUP, on_terminate_app);
     Unix.signal_add(Posix.SIGTERM, on_terminate_app);
 
-    app.hold();
     return app.run(args);
 }
 
