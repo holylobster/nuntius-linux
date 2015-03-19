@@ -56,9 +56,15 @@ public class Notification : Object {
         set construct { _icon = value; }
     }
 
+    [CCode (notify = false)]
     public bool read {
         get { return _read; }
-        set { _read = value; }
+        set {
+            if (_read != value) {
+                _read = value;
+                notify_property("read");
+            }
+        }
         default = false;
     }
 
