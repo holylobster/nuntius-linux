@@ -36,7 +36,7 @@ public interface BluezProfileManager : Object {
 
 [DBus (name = "org.bluez.Profile1")]
 public class BluezProfile : Object {
-    HashTable<ObjectPath, DeviceConnection>? connections;
+    private HashTable<ObjectPath, DeviceConnection>? connections;
 
     public BluezProfile(Cancellable cancellable) {
         connections = new HashTable<ObjectPath, DeviceConnection>(str_hash, str_equal);
@@ -92,14 +92,14 @@ public class BluezProfile : Object {
 }
 
 public class Application : Gtk.Application {
-    Cancellable? cancellable;
-    DBusObjectManager manager;
-    BluezProfileManager? profile_manager;
-    BluezProfile? profile;
-    uint connect_devices_id;
-    bool first_activation;
-    Window window;
-    List<NotificationApp> _notification_apps;
+    private Cancellable? cancellable;
+    private DBusObjectManager manager;
+    private BluezProfileManager? profile_manager;
+    private BluezProfile? profile;
+    private uint connect_devices_id;
+    private bool first_activation;
+    private Window window;
+    private List<NotificationApp> _notification_apps;
 
     public signal void notification_app_added(NotificationApp notification_app);
 

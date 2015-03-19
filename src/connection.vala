@@ -18,12 +18,12 @@
 namespace Nuntius {
 
 public class DeviceConnection : Object {
-    Cancellable cancellable;
-    Socket socket;
-    SocketConnection? connection;
-    DataInputStream? input;
-    bool _connected;
-    ObjectPath _device;
+    private Cancellable cancellable;
+    private Socket socket;
+    private SocketConnection? connection;
+    private DataInputStream? input;
+    private bool _connected;
+    private ObjectPath _device;
 
     public bool connected {
         get { return _connected; }

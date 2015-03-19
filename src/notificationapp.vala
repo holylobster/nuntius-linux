@@ -22,7 +22,7 @@ public class NotificationApp : Object {
     private string _app_name;
     private BytesIcon _icon;
     private uint _unread_notifications;
-    List<Notification> _notifications;
+    private List<Notification> _notifications;
 
     public string id {
         get { return _id; }
