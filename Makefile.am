@@ -116,10 +116,8 @@ install-data-local: data-icons-install-icons
 uninstall-local: data-icons-uninstall-icons
 
 EXTRA_DIST = \
-	$(applications_DATA) \
 	$(appdata_in_files) \
 	$(resource_files) \
-	data/org.holylobster.nuntius.appdata.xml \
 	src/resources/nuntius.gresource.xml \
 	$(addprefix data/icons/,$(data_icons_public_icons))
 
