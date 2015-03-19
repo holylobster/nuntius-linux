@@ -101,6 +101,10 @@ public class Application : Gtk.Application {
     private Window window;
     private List<NotificationApp> _notification_apps;
 
+    private const GLib.ActionEntry[] app_entries = {
+        { "about", on_about_activate }
+    };
+
     public signal void notification_app_added(NotificationApp notification_app);
 
     public List<NotificationApp> notification_apps {
@@ -136,6 +140,8 @@ public class Application : Gtk.Application {
 
         // Since it works as a daemon keep a hold forever on the primary instance
         hold();
+
+        add_action_entries(app_entries, this);
 
         var css_provider = new Gtk.CssProvider();
         try {
@@ -264,6 +270,29 @@ public class Application : Gtk.Application {
         handle_managed_objects.begin(false);
 
         return false;
+    }
+
+    private void on_about_activate() {
+        const string copyright = "Copyright \xc2\xa9 2015 Holy Lobster Team";
+
+        const string authors[] = {
+            "Andrea Curtoni <andrea.curtoni@gmail.com>",
+            "Ignacio Casal Quinteiro <icq@gnome.org>",
+            "Paolo Borelli <pborelli@gnome.org>",
+            null
+        };
+
+        Gtk.show_about_dialog(window,
+                              "program-name", _("Nuntius"),
+                              "logo-icon-name", "nuntius",
+                              "version", Config.VERSION,
+                              "comments", _("Deliver notifications from your phone or tablet to your computer over Bluetooth."),
+                              "copyright", copyright,
+                              "authors", authors,
+                              "license-type", Gtk.License.GPL_2_0,
+                              "wrap-license", false,
+                              "translator-credits", _("translator-credits"),
+                              null);
     }
 
     public void add_notification(Notification notification) {
