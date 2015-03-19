@@ -330,10 +330,7 @@ public class Application : Gtk.Application {
 
         if (notification != null) {
             withdraw_notification(notification.id);
-
-            if (!notification.read) {
-                notification.read = true;
-            }
+            notification.read = true;
         }
     }
 }
