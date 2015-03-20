@@ -1,22 +1,22 @@
 # SOME DESCRIPTIVE TITLE.
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# Dušan Kazik <prescott66@gmail.com>, 2015.
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-11 11:24+0100\n"
-"PO-Revision-Date: 2015-03-11 13:12+0100\n"
+"POT-Creation-Date: 2015-03-20 16:45+0100\n"
+"PO-Revision-Date: 2015-03-20 18:28+0100\n"
+"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
+"Language-Team: \n"
+"Language: sk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.7.4\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
-"Language: sk\n"
 
 #: ../data/org.holylobster.nuntius.appdata.xml.in.h:1
 msgid ""
@@ -31,8 +31,8 @@ msgid ""
 "To use Nuntius you will need to install a companion tool on your phone or "
 "tablet and pair it via Bluetooth."
 msgstr ""
-"Na používanie programu Nuntius budete musieť vo vašom telefóne alebo "
-"tablete nainštalovať spoločný nástroj a spárovať ho cez Bluetooth."
+"Na používanie programu Nuntius budete musieť vo vašom telefóne alebo tablete "
+"nainštalovať spoločný nástroj a spárovať ho cez Bluetooth."
 
 #: ../data/org.holylobster.nuntius.desktop.in.h:1
 msgid ""
@@ -45,3 +45,35 @@ msgstr ""
 #: ../data/org.holylobster.nuntius.desktop.in.h:2
 msgid "notifications;"
 msgstr "oznámenia;upozornenia;"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:1
+msgid "Window state"
+msgstr "Stav okna"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:2
+msgid "State of the window, e.g. maximized."
+msgstr "Stav okna, napr. maximalizované."
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:3
+msgid "Window width and height"
+msgstr "Šírka a výška okna"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:4
+msgid "Width and height of the window."
+msgstr "Šírka a výška okna."
+
+#: ../src/resources/gtk/menus.ui.h:1
+msgid "_About"
+msgstr "_O programe"
+
+#: ../src/resources/ui/appslistpanel.ui.h:1
+msgid "Type to search"
+msgstr "Text na vyhľadanie"
+
+#: ../src/resources/ui/window.ui.h:1
+msgid "Nuntius"
+msgstr "Nuntius"
+
+#: ../src/resources/ui/window.ui.h:2
+msgid "All Applications"
+msgstr "Všetky aplikácie"
