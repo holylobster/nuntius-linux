@@ -109,6 +109,9 @@ nuntius_LDADD = \
 	$(NUNTIUS_LIBS) \
 	-lm
 
+check-local: $(desktop_DATA)
+	$(DESKTOP_FILE_VALIDATE) $(desktop_DATA)
+
 install-data-local: data-icons-install-icons
 
 uninstall-local: data-icons-uninstall-icons
