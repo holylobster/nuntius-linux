@@ -27,6 +27,8 @@ AM_PROG_VALAC([0.23.3])
 
 AC_PATH_PROG(GLIB_COMPILE_RESOURCES, glib-compile-resources)
 
+GLIB_GSETTINGS
+
 PKG_PROG_PKG_CONFIG
 
 PKG_CHECK_MODULES(NUNTIUS, [
@@ -39,6 +41,7 @@ PKG_CHECK_MODULES(NUNTIUS, [
 
 AC_CONFIG_FILES([
     Makefile
+    data/org.holylobster.nuntius.gschema.xml
     po/Makefile.in
 ])
 

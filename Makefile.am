@@ -28,6 +28,10 @@ dist_noinst_DATA += data/org.holylobster.nuntius.service.in
 data/org.holylobster.nuntius.service: data/org.holylobster.nuntius.service.in Makefile
 	$(AM_V_GEN) $(MKDIR_P) $(dir $@); sed -e "s|\@bindir\@|$(bindir)|" $< > $@
 
+# gsettings
+gsettings_SCHEMAS = data/org.holylobster.nuntius.gschema.xml
+@GSETTINGS_RULES@
+
 data_icons_public_icons = \
 	hicolor_apps_16x16_nuntius.png \
 	hicolor_apps_22x22_nuntius.png \

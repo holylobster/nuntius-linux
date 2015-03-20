@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-19 08:57+0100\n"
+"POT-Creation-Date: 2015-03-20 16:45+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -37,6 +37,26 @@ msgstr ""
 
 #: ../data/org.holylobster.nuntius.desktop.in.h:2
 msgid "notifications;"
+msgstr ""
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:1
+msgid "Window state"
+msgstr ""
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:2
+msgid "State of the window, e.g. maximized."
+msgstr ""
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:3
+msgid "Window width and height"
+msgstr ""
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:4
+msgid "Width and height of the window."
+msgstr ""
+
+#: ../src/resources/gtk/menus.ui.h:1
+msgid "_About"
 msgstr ""
 
 #: ../src/resources/ui/appslistpanel.ui.h:1

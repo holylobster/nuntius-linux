@@ -26,12 +26,44 @@ public class Window : Gtk.ApplicationWindow {
     [GtkChild]
     private Gtk.HeaderBar titlebar_right;
 
+    private GLib.Settings settings;
+
     public Window(Application app) {
         Object(application: app);
     }
 
     construct {
+        settings = new Settings("org.holylobster.nuntius.state.window");
+        settings.delay ();
+
+        destroy.connect(() => {
+            settings.apply();
+        });
+
+        // Setup window geometry saving
+        Gdk.WindowState window_state = (Gdk.WindowState)settings.get_int("state");
+        if (Gdk.WindowState.MAXIMIZED in window_state) {
+            maximize();
+        }
+
+        int width, height;
+        settings.get ("size", "(ii)", out width, out height);
+        resize(width, height);
+
         apps_list_panel.selection_changed.connect(on_selection_changed);
+    }
+
+    protected override bool configure_event(Gdk.EventConfigure event) {
+        if (get_realized() && !(Gdk.WindowState.MAXIMIZED in get_window ().get_state())) {
+            settings.set("size", "(ii)", event.width, event.height);
+        }
+
+        return base.configure_event(event);
+    }
+
+    protected override bool window_state_event(Gdk.EventWindowState event) {
+        settings.set_int("state", event.new_window_state);
+        return base.window_state_event(event);
     }
 
     private void on_selection_changed(NotificationApp? notification_app) {
