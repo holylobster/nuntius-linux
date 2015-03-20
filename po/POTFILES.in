@@ -1,6 +1,7 @@
 data/org.holylobster.nuntius.appdata.xml.in
 data/org.holylobster.nuntius.desktop.in
 [type: gettext/gsettings]data/org.holylobster.nuntius.gschema.xml.in
+src/application.vala
 [type: gettext/glade]src/resources/gtk/menus.ui
 [type: gettext/glade]src/resources/ui/appslistpanel.ui
 [type: gettext/glade]src/resources/ui/window.ui
