@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nuntius-linux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-10 20:10+0100\n"
-"PO-Revision-Date: 2015-03-10 20:11+0100\n"
+"POT-Creation-Date: 2015-03-20 12:32+0100\n"
+"PO-Revision-Date: 2015-03-20 12:33+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -52,3 +52,19 @@ msgid "notifications;"
 msgstr ""
 "powiadomienia;powiadamianie;notyfikacje;wiadomości;komunikaty;telefon;tablet;"
 "smartfon;phablet;fablet;android;"
+
+#: ../src/resources/gtk/menus.ui.h:1
+msgid "_About"
+msgstr "_O programie"
+
+#: ../src/resources/ui/appslistpanel.ui.h:1
+msgid "Type to search"
+msgstr "Wyszukiwanie"
+
+#: ../src/resources/ui/window.ui.h:1
+msgid "Nuntius"
+msgstr "Nuntius"
+
+#: ../src/resources/ui/window.ui.h:2
+msgid "All Applications"
+msgstr "Wszystkie programy"
