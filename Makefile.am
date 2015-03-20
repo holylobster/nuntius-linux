@@ -3,16 +3,14 @@ ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 SUBDIRS = po
 
 # desktop file
-# (we can't use INTLTOOL_DESKTOP_RULE here due to lp#605826)
-%.desktop: %.desktop.in
-	$(AM_V_GEN) $(MKDIR_P) $(dir $@); LC_ALL=C $(INTLTOOL_MERGE) -d -u -c $(top_builddir)/po/.intltool-merge-cache $(top_srcdir)/po $< $@
-applicationsdir = $(datadir)/applications
-applications_DATA = data/org.holylobster.nuntius.desktop
-dist_noinst_DATA = data/org.holylobster.nuntius.desktop.in
+desktopdir = $(datadir)/applications
+desktop_in_files = data/org.holylobster.nuntius.desktop.in
+desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
+@INTLTOOL_DESKTOP_RULE@
 
 # autostart file
 autostartdir = $(sysconfdir)/xdg/autostart
-autostart_DATA = $(applications_DATA)
+autostart_DATA = $(desktop_DATA)
 
 # appdata file
 appdatadir = $(datadir)/appdata
@@ -23,7 +21,7 @@ appdata_in_files = data/org.holylobster.nuntius.appdata.xml.in
 # DBus service file
 servicedir = $(datadir)/dbus-1/services
 service_DATA = data/org.holylobster.nuntius.service
-dist_noinst_DATA += data/org.holylobster.nuntius.service.in
+dist_noinst_DATA = data/org.holylobster.nuntius.service.in
 
 data/org.holylobster.nuntius.service: data/org.holylobster.nuntius.service.in Makefile
 	$(AM_V_GEN) $(MKDIR_P) $(dir $@); sed -e "s|\@bindir\@|$(bindir)|" $< > $@
@@ -117,13 +115,14 @@ uninstall-local: data-icons-uninstall-icons
 
 EXTRA_DIST = \
 	$(appdata_in_files) \
+	$(desktop_in_files) \
 	$(resource_files) \
 	src/resources/nuntius.gresource.xml \
 	$(addprefix data/icons/,$(data_icons_public_icons))
 
 CLEANFILES = \
 	$(appdata_DATA) \
-	$(applications_DATA) \
+	$(desktop_DATA) \
 	$(service_DATA)
 
 MAINTAINERCLEANFILES = \
