@@ -10,8 +10,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: nuntius-linux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-20 12:32+0100\n"
-"PO-Revision-Date: 2015-03-20 12:33+0100\n"
+"POT-Creation-Date: 2015-03-22 15:35+0100\n"
+"PO-Revision-Date: 2015-03-22 15:37+0100\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -53,6 +53,42 @@ msgstr ""
 "powiadomienia;powiadamianie;notyfikacje;wiadomości;komunikaty;telefon;tablet;"
 "smartfon;phablet;fablet;android;"
 
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:1
+msgid "Window state"
+msgstr "Stan okna"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:2
+msgid "State of the window, e.g. maximized."
+msgstr "Stan okna, tzn. czy jest zmaksymalizowane."
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:3
+msgid "Window width and height"
+msgstr "Szerokość i wysokość okna"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:4
+msgid "Width and height of the window."
+msgstr "Szerokość i wysokość okna."
+
+#: ../src/application.vala:286 ../src/resources/ui/window.ui.h:1
+msgid "Nuntius"
+msgstr "Nuntius"
+
+#: ../src/application.vala:289
+msgid ""
+"Deliver notifications from your phone or tablet to your computer over "
+"Bluetooth."
+msgstr ""
+"Wyświetlanie powiadomień z telefonu lub tabletu na komputerze za pomocą "
+"Bluetooth."
+
+#: ../src/application.vala:294
+msgid "translator-credits"
+msgstr ""
+"Piotr Drąg <piotrdrag@gmail.com>, 2015\n"
+"Aviary.pl <gnomepl@aviary.pl>, 2015"
+
+#. namespace Nuntius
+#. ex:set ts=4 et:
 #: ../src/resources/gtk/menus.ui.h:1
 msgid "_About"
 msgstr "_O programie"
@@ -60,10 +96,6 @@ msgstr "_O programie"
 #: ../src/resources/ui/appslistpanel.ui.h:1
 msgid "Type to search"
 msgstr "Wyszukiwanie"
-
-#: ../src/resources/ui/window.ui.h:1
-msgid "Nuntius"
-msgstr "Nuntius"
 
 #: ../src/resources/ui/window.ui.h:2
 msgid "All Applications"
