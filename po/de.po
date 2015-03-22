@@ -39,4 +39,4 @@ msgstr ""
 #: ../data/org.holylobster.nuntius.desktop.in.h:2
 msgid "notifications;"
 msgstr ""
-"Benachrichtigungen"
+"Benachrichtigungen;"
