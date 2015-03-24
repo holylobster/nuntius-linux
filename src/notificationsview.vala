@@ -132,12 +132,21 @@ public class NotificationsView : Gtk.TextView {
             buf.insert(ref it, "\n\n", -1);
         }
 
+#if VALA_0_28
         buf.insert_with_tags(ref it, notification.title, -1, notification_tag, title_tag, null);
 
         if (notification.body != null) {
             buf.insert_with_tags(ref it, "\n\n", -1, notification_tag, null);
             buf.insert_with_tags(ref it, notification.body, -1, notification_tag, null);
         }
+#else
+        buf.insert_with_tags(it, notification.title, -1, notification_tag, title_tag, null);
+
+        if (notification.body != null) {
+            buf.insert_with_tags(it, "\n\n", -1, notification_tag, null);
+            buf.insert_with_tags(it, notification.body, -1, notification_tag, null);
+        }
+#endif
 
         buf.insert(ref it, "\n\n\n", -1);
 
