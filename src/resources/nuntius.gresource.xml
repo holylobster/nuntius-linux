@@ -4,6 +4,7 @@
     <file preprocess="xml-stripblanks">ui/window.ui</file>
     <file preprocess="xml-stripblanks">ui/appslistpanel.ui</file>
     <file preprocess="xml-stripblanks">ui/approw.ui</file>
+    <file preprocess="xml-stripblanks">ui/notificationcounter.ui</file>
     <file preprocess="xml-stripblanks">gtk/menus.ui</file>
     <file>css/nuntius-style.css</file>
   </gresource>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.1 -->
+<interface>
+  <template class="NuntiusNotificationCounter" parent="GtkFrame">
+    <property name="can_focus">False</property>
+    <property name="shadow_type">none</property>
+    <child>
+      <object class="GtkLabel" id="label_counter">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="halign">center</property>
+        <property name="valign">center</property>
+        <property name="ellipsize">end</property>
+      </object>
+    </child>
+  </template>
+</interface>

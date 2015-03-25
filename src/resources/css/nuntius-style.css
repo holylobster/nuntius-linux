@@ -39,7 +39,7 @@ NuntiusAppsListPanel.frame:dir(rtl) {
   background-color: transparent;
 }
 
-.nuntius-notifications-unread {
+NuntiusNotificationCounter {
   border-style: none;
   border-radius: 10px;
   background-color: darker(@theme_selected_bg_color);

@@ -38,24 +38,11 @@
           </packing>
         </child>
         <child>
-          <object class="GtkFrame" id="notifications_unread_frame">
+          <object class="NuntiusNotificationCounter" id="notification_counter">
             <property name="visible">False</property>
             <property name="can_focus">False</property>
             <property name="halign">end</property>
             <property name="valign">center</property>
-            <style>
-              <class name="nuntius-notifications-unread"/>
-            </style>
-            <child>
-              <object class="GtkLabel" id="notifications_unread_label">
-                <property name="visible">True</property>
-                <property name="can_focus">False</property>
-                <property name="halign">start</property>
-                <property name="valign">center</property>
-                <property name="ellipsize">end</property>
-                <property name="label">50</property>
-              </object>
-            </child>
           </object>
           <packing>
             <property name="left_attach">2</property>

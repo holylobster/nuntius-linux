@@ -25,9 +25,7 @@ public class AppsList : Gtk.ListBox {
         [GtkChild]
         private Gtk.Label label;
         [GtkChild]
-        private Gtk.Frame notifications_unread_frame;
-        [GtkChild]
-        private Gtk.Label notifications_unread_label;
+        private NotificationCounter notification_counter;
 
         private NotificationApp _notification_app;
 
@@ -40,9 +38,13 @@ public class AppsList : Gtk.ListBox {
             Object(notification_app: notification_app);
 
             image.set_from_gicon(notification_app.icon, Gtk.IconSize.BUTTON);
-            notifications_unread_label.set_label(notification_app.unread_notifications.to_string());
+            notification_app.bind_property("unread-notifications",
+                                           notification_counter,
+                                           "counter",
+                                           BindingFlags.SYNC_CREATE);
+
             if (notification_app.unread_notifications > 0) {
-                notifications_unread_frame.show();
+                notification_counter.show();
                 label.set_markup("<b>" + notification_app.app_name + "</b>");
             } else {
                 label.set_label(notification_app.app_name);
@@ -57,8 +59,7 @@ public class AppsList : Gtk.ListBox {
             });
 
             notification_app.notify["unread-notifications"].connect(() => {
-                notifications_unread_frame.set_visible(notification_app.unread_notifications > 0);
-                notifications_unread_label.set_label(notification_app.unread_notifications.to_string());
+                notification_counter.set_visible(notification_app.unread_notifications > 0);
 
                 if (notification_app.unread_notifications > 0) {
                     label.set_markup("<b>" + notification_app.app_name + "</b>");
