@@ -73,7 +73,7 @@ AM_VALAFLAGS = \
 	--pkg posix \
 	--gresources  $(top_srcdir)/src/resources/nuntius.gresource.xml
 
-bin_PROGRAMS = nuntius
+bin_PROGRAMS = nuntius qrtest
 
 BUILT_SOURCES = \
 	src/resources.c
@@ -109,6 +109,16 @@ AM_CFLAGS = \
 
 nuntius_LDFLAGS = -export-dynamic
 nuntius_LDADD = \
+	$(NUNTIUS_LIBS) \
+	-lm
+
+qrtest_SOURCES = \
+	tests/qrtest.vala \
+	src/qrimage.vala \
+	src/qrencode.vapi
+
+qrtest_LDFLAGS = -export-dynamic
+qrtest_LDADD = \
 	$(NUNTIUS_LIBS) \
 	-lm
 

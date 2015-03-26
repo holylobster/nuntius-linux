@@ -81,7 +81,6 @@ public class QRImage : Gtk.DrawingArea {
     }
 }
 
-
 } // namespace Nuntius
 
 /* ex:set ts=4 et: */
