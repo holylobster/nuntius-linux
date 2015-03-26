@@ -97,7 +97,8 @@ VALA_SOURCES = \
 nuntius_SOURCES = \
 	$(BUILT_SOURCES) \
 	$(VALA_SOURCES) \
-	src/config.vapi
+	src/config.vapi \
+	src/qrencode.vapi
 
 AM_CFLAGS = \
 	$(NUNTIUS_CFLAGS) \

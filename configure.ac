@@ -38,6 +38,7 @@ PKG_CHECK_MODULES(NUNTIUS, [
     glib-2.0 >= 2.38
     gtk+-3.0 >= 3.14.0
     json-glib-1.0 >= 0.16.2
+    libqrencode >= 3.1.0
 ])
 
 AC_CONFIG_FILES([
