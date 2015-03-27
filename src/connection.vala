@@ -17,38 +17,43 @@
 
 namespace Nuntius {
 
-public class DeviceConnection : Object {
+public class Connection : Object {
     private Cancellable cancellable;
-    private Socket socket;
-    private SocketConnection? connection;
+    private SocketConnection? _connection;
     private DataInputStream? input;
     private bool _connected;
-    private ObjectPath _device;
+    private string _server_name;
 
     public bool connected {
         get { return _connected; }
         set { _connected = value; }
     }
 
-    public ObjectPath device {
-        get { return _device; }
+    public string server_name {
+        get { return _server_name; }
+        set construct { _server_name = value; }
+    }
+
+    public SocketConnection? connection {
+        get { return _connection; }
+        set construct { _connection = value; }
     }
 
     public signal void notification_posted(Notification notification);
 
     public signal void notification_removed(string id, string package_name);
 
-    public DeviceConnection(ObjectPath device, Socket socket) {
-        cancellable = new Cancellable();
-        this.socket = socket;
-        _connected = true;
-        _device = device;
+    public Connection(string server_name, SocketConnection connection) {
+        Object(connected: true, server_name: server_name, connection: connection);
 
-        connection = SocketConnection.factory_create_connection(socket);
-        input = new DataInputStream(connection.get_input_stream());
+        input = new DataInputStream(_connection.get_input_stream());
         input.set_newline_type(DataStreamNewlineType.CR_LF);
 
         read_message();
+    }
+
+    construct {
+        cancellable = new Cancellable();
     }
 
     protected override void dispose() {

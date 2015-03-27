@@ -34,31 +34,20 @@ public interface BluezProfileManager : Object {
     public abstract void unregister_profile(ObjectPath profile) throws IOError;
 }
 
-[DBus (name = "org.bluez.Profile1")]
-public class BluezProfile : Object {
-    private HashTable<ObjectPath, DeviceConnection>? connections;
+public class Connections : Object {
+    private HashTable<string, Connection>? connections;
 
-    public BluezProfile(Cancellable cancellable) {
-        connections = new HashTable<ObjectPath, DeviceConnection>(str_hash, str_equal);
-
-        cancellable.connect(() => {
-            connections.remove_all();
-        });
+    construct {
+        connections = new HashTable<string, Connection>(str_hash, str_equal);
     }
 
-    public void release() {
-        print("release method called\n");
-    }
-
-    public void new_connection(ObjectPath device, Socket socket, HashTable<string, Variant> fd_properties) {
-        print("new_connection method called for device: %s\n", device);
-        var connection = new DeviceConnection(device, socket);
-
-        connections.insert(device, connection);
+    public void add_connection(Connection connection) {
+        connections.insert(connection.server_name, connection);
         connection.notify["connected"].connect(() => {
             if (!connection.connected) {
-                connections.remove(connection.device);
-                print("removed connection for device '%s'\n", connection.device);
+                connections.remove(connection.server_name);
+                print("removed connection for device '%s'\n",
+                      connection.server_name);
             }
         });
 
@@ -73,26 +62,52 @@ public class BluezProfile : Object {
         });
     }
 
-    public void request_disconnection(ObjectPath device) {
-        print("request_disconnection method called for devices: %s\n", device);
-
-        var device_connection = connections.lookup(device);
-        if (device_connection != null) {
-            connections.remove(device);
+    public void remove_connection(string server_name) {
+        var connection = connections.lookup(server_name);
+        if (connection != null) {
+            connections.remove(server_name);
         }
     }
 
-    public bool has_any_device_connected() {
+    public bool is_connected() {
         return connections.size() > 0;
     }
 
-    public bool get_device_connected(ObjectPath device) {
-        return connections.get(device) != null;
+    public bool get_connected(string server_name) {
+        return connections.get(server_name) != null;
+    }
+}
+
+[DBus (name = "org.bluez.Profile1")]
+public class BluezProfile : Object {
+    private Connections connections;
+
+    public BluezProfile(Connections connections) {
+        this.connections = connections;
+    }
+
+    public void release() {
+        print("release method called\n");
+    }
+
+    public void new_connection(ObjectPath device, Socket socket, HashTable<string, Variant> fd_properties) {
+        print("new_connection method called for device: %s\n", device);
+        var connection = new Connection(device,
+                                        SocketConnection.factory_create_connection(socket));
+
+        connections.add_connection(connection);
+    }
+
+    public void request_disconnection(ObjectPath device) {
+        print("request_disconnection method called for devices: %s\n", device);
+
+        connections.remove_connection(device);
     }
 }
 
 public class Application : Gtk.Application {
     private Cancellable? cancellable;
+    private Connections connections;
     private DBusObjectManager manager;
     private BluezProfileManager? profile_manager;
     private BluezProfile? profile;
@@ -154,7 +169,8 @@ public class Application : Gtk.Application {
                                                  css_provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        profile = new BluezProfile(cancellable);
+        connections = new Connections();
+        profile = new BluezProfile(connections);
 
         var profile_path = new ObjectPath(get_dbus_object_path() + "/Profile");
 
@@ -223,7 +239,7 @@ public class Application : Gtk.Application {
         }
 
         // try to get the device
-        if (name == "org.bluez.Device1" && !profile.get_device_connected(path)) {
+        if (name == "org.bluez.Device1" && !connections.get_connected(path)) {
             try {
                 BluezDeviceBus device = Bus.get_proxy_sync(BusType.SYSTEM, "org.bluez", path);
 
@@ -259,7 +275,7 @@ public class Application : Gtk.Application {
             }
         }
 
-        if (!profile.has_any_device_connected()) {
+        if (!connections.is_connected()) {
             // try to connect to the paired device every few seconds
             connect_devices_id = Timeout.add_seconds(5, on_try_to_connect_devices);
         }
