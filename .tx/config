@@ -1,0 +1,8 @@
+[main]
+host = https://www.transifex.com
+type = PO
+
+[nuntius-linux.strings]
+file_filter = po/<lang>.po
+source_file = po/nuntius.pot
+source_lang = en
