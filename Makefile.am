@@ -62,7 +62,8 @@ data-icons-uninstall-icons:
 AM_CPPFLAGS = \
 	-DGETTEXT_PACKAGE=\""$(GETTEXT_PACKAGE)"\" \
 	-DGNOMELOCALEDIR=\""$(localedir)"\" \
-	-DDATADIR=\""$(datadir)"\"
+	-DDATADIR=\""$(datadir)"\" \
+	-DTOOLSDIR=\""$(libexecdir)/$(PACKAGE)"\"
 
 AM_VALAFLAGS = \
 	--target-glib=2.40 \
@@ -70,6 +71,7 @@ AM_VALAFLAGS = \
 	--pkg gio-unix-2.0 \
 	--pkg gtk+-3.0 \
 	--pkg json-glib-1.0 \
+	--pkg gnutls \
 	--pkg posix \
 	--gresources  $(top_srcdir)/src/resources/nuntius.gresource.xml
 
@@ -81,6 +83,9 @@ BUILT_SOURCES = \
 resource_files = $(shell $(GLIB_COMPILE_RESOURCES) --generate-dependencies --sourcedir=$(top_srcdir)/src/resources $(top_srcdir)/src/resources/nuntius.gresource.xml)
 src/resources.c: $(top_srcdir)/src/resources/nuntius.gresource.xml $(resource_files)
 	$(AM_V_GEN) $(GLIB_COMPILE_RESOURCES) --target=$@ --sourcedir=$(top_srcdir)/src/resources --generate-source $<
+
+toolsdir = $(libexecdir)/$(PACKAGE)
+tools_SCRIPTS = createcert.sh
 
 VALA_SOURCES = \
 	src/application.vala \
