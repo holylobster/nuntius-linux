@@ -116,6 +116,7 @@ public class Application : Gtk.Application {
     private Window window;
     private List<NotificationApp> _notification_apps;
     private string connect_host;
+    private TlsCertificate? cert;
 
     private const GLib.ActionEntry[] app_entries = {
         { "about", on_about_activate }
@@ -157,6 +158,16 @@ public class Application : Gtk.Application {
         }
 
         base.dispose();
+    }
+
+    private void create_cert() {
+        //GnuTLS.X509.Certificate certi = GnuTLS.X509.Certificate.create();
+        GnuTLS.X509.PrivateKey key = GnuTLS.X509.PrivateKey.create();
+        try {
+            cert = new TlsCertificate.from_files ("server.pem", "server.key");
+        } catch (Error e) {
+            warning("Failed to load certificate: %s", e.message);
+        }
     }
 
     protected override void startup() {
@@ -208,6 +219,8 @@ public class Application : Gtk.Application {
         } catch (Error e) {
             warning("%s", e.message);
         }
+
+        create_cert();
     }
 
     private void ensure_window() {
@@ -219,22 +232,37 @@ public class Application : Gtk.Application {
         }
     }
 
+    private void show_qrcode() {
+        try {
+            string read;
+            FileUtils.get_contents ("server.pem", out read);
+        } catch (Error e) {
+            warning("error reading file");
+        }
+    }
+
     protected override void activate() {
         // We want it to start as a daemon and not showing the window from
         // the beginning
         if (!first_activation) {
             ensure_window();
             window.present();
+            //show_qrcode();
         }
 
         first_activation = false;
 
-        if (connect_host != null) {
+        if (connect_host != null && cert != null) {
+            var host = connect_host;
             var client = new SocketClient();
+
+            client.tls = true;
+            client.event.connect(on_socket_client_event);
             client.connect_to_host_async.begin(connect_host, 12233, cancellable, (obj, res) => {
                 try {
                     var connection = client.connect_to_host_async.end(res);
-                    connections.add_connection(new Connection(connect_host, connection));
+                    warning("connect ok");
+                    connections.add_connection(new Connection(host, connection));
                 } catch (Error e) {
                     warning("Could not connect to server: %s", connect_host);
                 }
@@ -242,6 +270,14 @@ public class Application : Gtk.Application {
         }
 
         base.activate();
+    }
+
+    // FIXME: this cannot be a lambda, since for now vala does not realize SocketConnectable is nullable
+    private void on_socket_client_event(SocketClientEvent event, SocketConnectable? connectable, IOStream? ios) {
+        if (event == SocketClientEvent.TLS_HANDSHAKING) {
+            var tls = (TlsConnection) ios;
+            tls.set_certificate(cert);
+        }
     }
 
     protected override int command_line(ApplicationCommandLine cl) {
