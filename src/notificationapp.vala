@@ -18,16 +18,12 @@
 namespace Nuntius {
 
 public class NotificationApp : Object {
-    private string _id;
+    public string id { get; construct set; }
+    public Connection connection { get; construct set; }
     private string _app_name;
     private BytesIcon _icon;
     private uint _unread_notifications;
     private List<Notification> _notifications;
-
-    public string id {
-        get { return _id; }
-        set construct { _id = value; }
-    }
 
     public string app_name {
         get { return _app_name; }
@@ -45,8 +41,8 @@ public class NotificationApp : Object {
         get { return _notifications; }
     }
 
-    public NotificationApp(string id) {
-        Object(id: id);
+    public NotificationApp(string id, Connection connection) {
+        Object(id: id, connection: connection);
     }
 
     construct {
@@ -94,6 +90,28 @@ public class NotificationApp : Object {
         }
 
         return n;
+    }
+
+    public void blacklist() {
+        Json.Builder builder = new Json.Builder();
+        builder.begin_object();
+        builder.set_member_name("event");
+        builder.add_string_value("blacklist");
+        builder.set_member_name("app");
+        builder.begin_object();
+
+        builder.set_member_name("packageName");
+        builder.add_string_value(id);
+
+        builder.end_object();
+        builder.end_object();
+
+        Json.Generator generator = new Json.Generator();
+        Json.Node root = builder.get_root();
+        generator.set_root(root);
+
+        string blacklist_message = generator.to_data(null);
+        connection.send_message(blacklist_message);
     }
 }
 

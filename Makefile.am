@@ -96,6 +96,8 @@ VALA_SOURCES = \
 	src/notificationcounter.vala \
 	src/notificationsview.vala \
 	src/qrimage.vala \
+	src/smsnotification.vala \
+	src/testview.vala \
 	src/window.vala \
 	src/main.vala
 

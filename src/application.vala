@@ -52,13 +52,18 @@ public class Connections : Object {
         });
 
         connection.notification_posted.connect((notification) => {
-            var app = GLib.Application.get_default();
-            (app as Application).add_notification(notification);
+            var app = (Application) GLib.Application.get_default();
+            app.add_notification(notification);
+        });
+
+        connection.sms_received.connect((sms_notification) => {
+            var app = (Application) GLib.Application.get_default();
+            app.add_sms_notification(sms_notification);
         });
 
         connection.notification_removed.connect((id, package_name) => {
-            var app = GLib.Application.get_default();
-            (app as Application).mark_notification_read(id, package_name);
+            var app = (Application) GLib.Application.get_default();
+            app.mark_notification_read(id, package_name);
         });
     }
 
@@ -121,14 +126,17 @@ public class Application : Gtk.Application {
     private bool first_activation;
     private bool cert_created;
     private Window window;
-    private List<NotificationApp> _notification_apps;
     private string connect_host;
     private TcpConnectionStatus tcp_status;
     private TlsCertificate? cert;
+    private List<NotificationApp> _notification_apps;
+    private List<SmsNotification> sms_notifications;
 
     private const GLib.ActionEntry[] app_entries = {
         { "about", on_about_activate },
-        { "show-qrcode", on_show_qrcode_activate }
+        { "show-qrcode", on_show_qrcode_activate },
+        { "open-notifications-view", on_open_notifications_view_activate, "(ss)"},
+        { "send-sms", on_send_sms_activate, "(ss)"}
     };
 
     private const OptionEntry[] options = {
@@ -357,7 +365,6 @@ public class Application : Gtk.Application {
 
         dict.lookup("connect", "s", out connect_host);
         activate();
-        connect_host = null;
 
         return 0;
     }
@@ -427,6 +434,27 @@ public class Application : Gtk.Application {
         return false;
     }
 
+    public void on_open_notifications_view_activate(GLib.SimpleAction action, GLib.Variant? parameter) {
+        string id, package_name;
+        parameter.get("(ss)", out id, out package_name);
+
+        Notification? notification = null;
+        notification = get_notification(id, package_name);
+        if (notification == null) {
+            return;
+        }
+
+        /* FIXME: just temporary until we add actions to the main UI */
+        if (notification.actions != null) {
+            var view = new TestView(notification);
+            view.show_all();
+            return;
+        }
+
+        /* FIXME for now just raise the main window */
+        activate();
+    }
+
     private void on_about_activate() {
         const string copyright = "Copyright \xc2\xa9 2015 Holy Lobster Team";
 
@@ -454,6 +482,18 @@ public class Application : Gtk.Application {
         show_qrcode();
     }
 
+    public Notification? get_notification(string id, string package_name) {
+        foreach (var napp in notification_apps) {
+            if (napp.id == package_name) {
+                var notification = napp.get_notification(id);
+                if (notification != null) {
+                    return notification;
+                }
+            }
+        }
+        return null;
+    }
+
     public void add_notification(Notification notification) {
         bool found = false;
 
@@ -466,7 +506,7 @@ public class Application : Gtk.Application {
         }
 
         if (!found) {
-            var napp = new NotificationApp(notification.package_name);
+            var napp = new NotificationApp(notification.package_name, notification.connection);
             napp.add_notification(notification);
             _notification_apps.prepend(napp);
 
@@ -480,16 +520,46 @@ public class Application : Gtk.Application {
     public void mark_notification_read(string id, string package_name) {
         Notification? notification = null;
 
-        foreach (var napp in _notification_apps) {
-            if (napp.id == package_name) {
-                notification = napp.get_notification(id);
-                break;
-            }
-        }
+        notification = get_notification(id, package_name);
 
         if (notification != null) {
             withdraw_notification(notification.id);
             notification.read = true;
+        }
+    }
+
+    public void blacklist_application(string package_name) {
+        foreach (var napp in notification_apps) {
+            if (napp.id == package_name) {
+                napp.blacklist();
+            }
+        }
+    }
+
+    public SmsNotification? get_sms_notification(string id) {
+        foreach (var sms_notification in sms_notifications) {
+            if (sms_notification.id == id) {
+                return sms_notification;
+            }
+        }
+        return null;
+    }
+
+    public void add_sms_notification(SmsNotification sms_notification) {
+        sms_notifications.prepend(sms_notification);
+        send_notification(sms_notification.id, sms_notification.to_gnotification());
+    }
+
+    public void on_send_sms_activate(GLib.SimpleAction action, GLib.Variant? parameter) {
+        string id, text;
+        parameter.get("(ss)", out id, out text);
+
+        if (id != null && text != null) {
+            var sms_notification = get_sms_notification(id);
+
+            if (sms_notification != null) {
+                sms_notification.send_sms_message(text);
+            }
         }
     }
 }
