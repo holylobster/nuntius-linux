@@ -18,43 +18,18 @@
 namespace Nuntius {
 
 public class Notification : Object {
-    private string _id;
-    private string _package_name;
-    private string _app_name;
-    private string _title;
-    private string _body;
-    private BytesIcon _icon;
+    public string id { get; construct set; }
+    public string package_name { get; construct set; }
+    public string app_name { get; construct set; }
+    public string title { get; construct set; }
+    public string body { get; construct set; }
+    public string? flag { get; construct set; }
+    public string? key { get; construct set; }
+    public BytesIcon icon { get; construct set; }
+    public string[]? actions { get; construct set; }
+    public Connection connection { get; construct set; }
+
     private bool _read;
-
-    public string id {
-        get { return _id; }
-        set construct { _id = value; }
-    }
-
-    public string package_name {
-        get { return _package_name; }
-        set construct { _package_name = value; }
-    }
-
-    public string app_name {
-        get { return _app_name; }
-        set construct { _app_name = value; }
-    }
-
-    public string title {
-        get { return _title; }
-        set construct { _title = value; }
-    }
-
-    public string body {
-        get { return _body; }
-        set construct { _body = value; }
-    }
-
-    public BytesIcon icon {
-        get { return _icon; }
-        set construct { _icon = value; }
-    }
 
     [CCode (notify = false)]
     public bool read {
@@ -68,8 +43,60 @@ public class Notification : Object {
         default = false;
     }
 
-    public Notification(string id, string package_name, string app_name, string title, string? body, BytesIcon? icon) {
-        Object(id: id, package_name: package_name, app_name: app_name, title: title, body: body, icon: icon);
+    public Notification(Connection connection, string id, string package_name, string app_name, string title, string? flag, string? key, string? body, BytesIcon? icon, string[]? actions) {
+        Object(connection: connection, id: id, package_name: package_name, app_name: app_name, title: title, flag: flag, key: key, body: body, icon: icon, actions: actions);
+    }
+
+    public void send_dismiss_message() {
+        Json.Builder builder = new Json.Builder();
+        builder.begin_object();
+        builder.set_member_name("event");
+        builder.add_string_value("dismiss");
+        builder.set_member_name("notification");
+        builder.begin_object();
+
+        if (key != null){
+            builder.set_member_name("key");
+            builder.add_string_value(_key);
+        } else {
+            builder.set_member_name("packageName");
+            builder.add_string_value(_package_name);
+            builder.set_member_name("flag");
+            builder.add_string_value(_flag);
+            builder.set_member_name("id");
+            builder.add_string_value(_id);
+        }
+        builder.end_object();
+        builder.end_object();
+
+        Json.Generator generator = new Json.Generator();
+        Json.Node root = builder.get_root();
+        generator.set_root(root);
+        string dismiss_message = generator.to_data(null);
+        connection.send_message(dismiss_message);
+    }
+
+    public void send_action_message(string s) {
+        Json.Builder builder = new Json.Builder();
+        builder.begin_object();
+        builder.set_member_name("event");
+        builder.add_string_value("action");
+        builder.set_member_name("action");
+        builder.begin_object();
+
+        builder.set_member_name("key");
+        builder.add_string_value(_key);
+        builder.set_member_name("actionName");
+        builder.add_string_value(s);
+
+        builder.end_object();
+        builder.end_object();
+
+        Json.Generator generator = new Json.Generator();
+        Json.Node root = builder.get_root();
+        generator.set_root(root);
+        string action_message = generator.to_data(null);
+        connection.send_message(action_message);
     }
 
     public GLib.Notification to_gnotification() {
@@ -82,6 +109,9 @@ public class Notification : Object {
         if (icon != null) {
             notification.set_icon(icon);
         }
+
+        notification.set_default_action("app.notificationopened::" + _id);
+        notification.add_button("Open with Nuntius","app.opennuntius::" + _id);
 
         return notification;
     }

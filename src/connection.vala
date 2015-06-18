@@ -21,6 +21,7 @@ public class Connection : Object {
     private Cancellable cancellable;
     private SocketConnection? _connection;
     private DataInputStream? input;
+    private DataOutputStream? output;
     private bool _connected;
     private string _server_name;
 
@@ -41,6 +42,8 @@ public class Connection : Object {
 
     public signal void notification_posted(Notification notification);
 
+    public signal void sms_received(SmsNotification notification);
+
     public signal void notification_removed(string id, string package_name);
 
     public Connection(string server_name, SocketConnection connection) {
@@ -48,7 +51,7 @@ public class Connection : Object {
 
         input = new DataInputStream(_connection.get_input_stream());
         input.set_newline_type(DataStreamNewlineType.CR_LF);
-
+        output = new DataOutputStream(_connection.get_output_stream());
         read_message();
     }
 
@@ -68,12 +71,21 @@ public class Connection : Object {
         base.dispose();
     }
 
+    public void send_message(string msg) {
+        try {
+            output.put_string(msg + "\n");
+        } catch (Error e) {
+            print("Couldn't send message to " + _server_name);
+        }
+        print(msg);
+    }
+
     void read_message() {
         input.read_line_async.begin(Priority.DEFAULT, cancellable, (obj, res) => {
             try {
                 string notification_json = input.read_line_async.end(res);
 
-                print("Got the json message: %s\n", notification_json);
+                //print("Got the json message: %s\n", notification_json);
 
                 var parser = new Json.Parser();
                 try {
@@ -99,6 +111,7 @@ public class Connection : Object {
                 case "notificationPosted":
                     foreach (var i in eventItems) {
                         Notification? notification = null;
+                        string? key = null;
 
                         var object = i.get_object();
                         var id = object.get_int_member("id").to_string();
@@ -110,16 +123,36 @@ public class Connection : Object {
                             icon = new BytesIcon(new Bytes(Base64.decode(object.get_string_member("icon"))));
                         }
 
+                        if (object.has_member("key")) {
+                            key = object.get_string_member("key");
+                        }
+
                         var notification_object = object.get_object_member("notification");
                         if (notification_object.has_member("title")) {
                             var title = notification_object.get_string_member("title");
                             string? text = null;
+                            string? flags = null;
+                            string[]? actions_string = null;
+
+                            if (notification_object.has_member("flags")) {
+                                flags = notification_object.get_string_member("flags");
+                            }
 
                             if (notification_object.has_member("text")) {
                                 text = notification_object.get_string_member("text");
                             }
 
-                            notification = new Notification(id, package_name, app_name, title, text, icon);
+                            if (notification_object.has_member("actions")) {
+                                var actions = notification_object.get_array_member("actions").get_elements();
+                                var number_of_actions = notification_object.get_array_member("actions").get_length();
+                                actions_string = new string[number_of_actions];
+                                var count = 0;
+                                foreach (var action in actions) {
+                                    actions_string[count] = action.get_object().get_string_member("title");
+                                    count++;
+                                }
+                            }
+                            notification = new Notification(this, id, package_name, app_name, title, flags, key, text, icon, actions_string);
 
                             notification_posted(notification);
                         }
@@ -130,11 +163,42 @@ public class Connection : Object {
                         var object = i.get_object();
                         var id = object.get_int_member("id").to_string();
                         var package_name = object.get_string_member("packageName");
-
                         notification_removed(id, package_name);
                     }
                     break;
                 case "listNotifications":
+                    break;
+                case "sms":
+                    foreach (var i in eventItems) {
+                        var object = i.get_object();
+                        string? id = null;
+                        string? sender = null;
+                        string? sender_num = null;
+                        string? msg = null;
+                        BytesIcon? icon = null;
+
+                        if (object.has_member("id")) {
+                            id = object.get_string_member("id");
+                        }
+
+                        if (object.has_member("sender")) {
+                            sender = object.get_string_member("sender");
+                        }
+
+                        if (object.has_member("sender_num")) {
+                            sender_num = object.get_string_member("sender_num");
+                        }
+
+                        if (object.has_member("message")) {
+                            msg = object.get_string_member("message");
+                        }
+
+                        if (object.has_member("icon")) {
+                            icon = new BytesIcon(new Bytes(Base64.decode(object.get_string_member("icon"))));
+                        }
+                        SmsNotification notification = new SmsNotification(this, id, sender, sender_num, msg, icon);
+                        sms_received(notification);
+                    }
                     break;
                 default:
                     warning("Unknown event: %s", event);

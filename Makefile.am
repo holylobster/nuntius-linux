@@ -71,7 +71,6 @@ AM_VALAFLAGS = \
 	--pkg gio-unix-2.0 \
 	--pkg gtk+-3.0 \
 	--pkg json-glib-1.0 \
-	--pkg gnutls \
 	--pkg posix \
 	--gresources  $(top_srcdir)/src/resources/nuntius.gresource.xml
 
@@ -98,7 +97,9 @@ VALA_SOURCES = \
 	src/notificationsview.vala \
 	src/qrimage.vala \
 	src/window.vala \
-	src/main.vala
+	src/smsnotification.vala \
+	src/main.vala \
+	src/notificationview.vala
 
 nuntius_SOURCES = \
 	$(BUILT_SOURCES) \
