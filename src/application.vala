@@ -113,6 +113,7 @@ public class Application : Gtk.Application {
     private BluezProfile? profile;
     private uint connect_devices_id;
     private bool first_activation;
+    private bool cert_created;
     private Window window;
     private List<NotificationApp> _notification_apps;
     private string connect_host;
@@ -142,6 +143,7 @@ public class Application : Gtk.Application {
 
     construct {
         cancellable = new Cancellable();
+        cert_created = false;
         first_activation = true;
         _notification_apps = new List<NotificationApp>();
     }
@@ -158,16 +160,6 @@ public class Application : Gtk.Application {
         }
 
         base.dispose();
-    }
-
-    private void create_cert() {
-        //GnuTLS.X509.Certificate certi = GnuTLS.X509.Certificate.create();
-        GnuTLS.X509.PrivateKey key = GnuTLS.X509.PrivateKey.create();
-        try {
-            cert = new TlsCertificate.from_files ("server.pem", "server.key");
-        } catch (Error e) {
-            warning("Failed to load certificate: %s", e.message);
-        }
     }
 
     protected override void startup() {
@@ -220,7 +212,7 @@ public class Application : Gtk.Application {
             warning("%s", e.message);
         }
 
-        create_cert();
+        create_cert_bash();
     }
 
     private void ensure_window() {
@@ -232,23 +224,108 @@ public class Application : Gtk.Application {
         }
     }
 
-    private void show_qrcode() {
+    private void create_cert() {
+        GnuTLS.X509.PrivateKey key = GnuTLS.X509.PrivateKey.create();
+        key.generate(GnuTLS.PKAlgorithm.RSA, 2048);
+        //GnuTLS.X509.Certificate certi = GnuTLS.X509.Certificate.create();
+    }
+
+    private string? call_sytem_function (string[] args) {
         try {
-            string read;
-            FileUtils.get_contents ("server.pem", out read);
-        } catch (Error e) {
-            warning("error reading file");
+            string[] spawn_args = args;
+            string[] spawn_env = Environ.get ();
+            string ls_stdout;
+            string ls_stderr;
+            int ls_status;
+
+            Process.spawn_sync (".",
+                                spawn_args,
+                                spawn_env,
+                                SpawnFlags.SEARCH_PATH,
+                                null,
+                                out ls_stdout,
+                                out ls_stderr,
+                                out ls_status);
+            /*
+            stdout.printf ("stdout:\n");
+            stdout.puts (ls_stdout);
+            stdout.printf ("stderr:\n");
+            stdout.puts (ls_stderr);
+            stdout.printf ("status: %d\n", ls_status);*/ 
+            return ls_stdout;
+
+        } catch (SpawnError e) {
+            stdout.printf ("Error: %s\n", e.message);
+            return null;
         }
+    }
+
+    private void create_cert_bash() {
+        var path_to_conf = GLib.Environment.get_user_config_dir() + "/nuntius/";
+        var file = File.new_for_path (path_to_conf + "nuntius.pem");
+        if (file.query_exists ()) {
+            string[] spawn_args = {"./createcert.sh"};
+            call_sytem_function(spawn_args);
+            cert_created = true;
+        }
+        try {
+            cert = new TlsCertificate.from_files (path_to_conf + "nuntius.pem", path_to_conf + "nuntius.key");
+        } catch (Error e) {
+            warning("Failed to load certificate: %s", e.message);
+        }
+    }
+
+    private string get_fingerprint() {
+        string path_to_pem = GLib.Environment.get_user_config_dir() + "/nuntius/nuntius.pem";
+        string[] spawn_args = {"openssl", "x509", "-in", path_to_pem, "-fingerprint", "-sha1"};
+        string result = call_sytem_function(spawn_args); 
+        string[] splitted = result.split("=");
+        splitted = splitted[1].split("\n");
+        string fingerprint = splitted[0];
+        return fingerprint;
+    }
+
+    private string get_hostname() {
+        string[] spawn_args = {"hostname"};
+        string hostname = call_sytem_function(spawn_args); 
+        return hostname;
+    }
+
+    private void show_qrcode() {
+        var dialog = new Gtk.Dialog.with_buttons ("Certificate fingerprint",
+                                       window,
+                                       Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
+                                       _("_OK"),
+                                       Gtk.ResponseType.OK);
+        dialog.border_width = 30;
+        dialog.set_default_size(300, 300);
+        dialog.destroy.connect(Gtk.main_quit);
+
+        dialog.response.connect(i => {
+            window.destroy();
+        });
+
+        var qr = new Nuntius.QRImage();
+        qr.text = get_fingerprint() + "-" + get_hostname();
+        print(qr.text);
+        qr.show();
+
+        dialog.get_content_area().pack_end(qr, true, true, 0);
+        dialog.show();
     }
 
     protected override void activate() {
         // We want it to start as a daemon and not showing the window from
         // the beginning
-        if (!first_activation) {
+        if (cert_created) {
             ensure_window();
             window.present();
-            //show_qrcode();
+            show_qrcode();
+        } else if (!first_activation) {
+            ensure_window();
+            window.present();
         }
+
 
         first_activation = false;
 
@@ -275,7 +352,11 @@ public class Application : Gtk.Application {
     // FIXME: this cannot be a lambda, since for now vala does not realize SocketConnectable is nullable
     private void on_socket_client_event(SocketClientEvent event, SocketConnectable? connectable, IOStream? ios) {
         if (event == SocketClientEvent.TLS_HANDSHAKING) {
+            warning("TLS_HANDSHAKING");
             var tls = (TlsConnection) ios;
+            tls.accept_certificate.connect((cert, err) => {
+                return true;
+            });
             tls.set_certificate(cert);
         }
     }
