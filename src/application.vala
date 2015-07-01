@@ -125,7 +125,7 @@ public class Application : Gtk.Application {
 
     private const OptionEntry[] options = {
         {"connect", '\0', 0, OptionArg.STRING, null,
-         N_("Connect to a specifi server"), null},
+         N_("Connect to a specific server"), null},
         {null}
     };
 
