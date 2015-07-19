@@ -39,6 +39,8 @@ PKG_CHECK_MODULES(NUNTIUS, [
     gtk+-3.0 >= 3.14.0
     json-glib-1.0 >= 0.16.2
     libqrencode >= 3.1.0
+    avahi-client >= 0.6.31
+    avahi-gobject >= 0.6.31
 ])
 
 AC_CONFIG_FILES([

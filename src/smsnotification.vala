@@ -22,10 +22,10 @@ public class SmsNotification : Object {
     public string sender_num { get; construct set; }
     public string message { get; construct set; }
     public BytesIcon icon { get; construct set; }
-    public Connection connection { get; construct set; }
+    public Client client { get; construct set; }
 
-    public SmsNotification(Connection connection, string id, string sender, string sender_num, string message, BytesIcon icon) {
-        Object(connection: connection, id: id, sender: sender, sender_num: sender_num, message: message, icon: icon);
+    public SmsNotification(Client client, string id, string sender, string sender_num, string message, BytesIcon icon) {
+        Object(client: client, id: id, sender: sender, sender_num: sender_num, message: message, icon: icon);
     }
 
     public void send_sms_message(string message) {
@@ -49,7 +49,7 @@ public class SmsNotification : Object {
         Json.Node root = builder.get_root();
         generator.set_root(root);
         string sms_message = generator.to_data(null);
-        connection.send_message(sms_message);
+        client.send_message(sms_message);
     }
 
     public GLib.Notification to_gnotification() {

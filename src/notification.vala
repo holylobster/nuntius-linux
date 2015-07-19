@@ -27,7 +27,7 @@ public class Notification : Object {
     public string? key { get; construct set; }
     public BytesIcon icon { get; construct set; }
     public string[]? actions { get; construct set; }
-    public Connection connection { get; construct set; }
+    public Client client { get; construct set; }
 
     private bool _read;
 
@@ -43,8 +43,8 @@ public class Notification : Object {
         default = false;
     }
 
-    public Notification(Connection connection, string id, string package_name, string app_name, string title, string? flag, string? key, string? body, BytesIcon? icon, string[]? actions) {
-        Object(connection: connection, id: id, package_name: package_name, app_name: app_name, title: title, flag: flag, key: key, body: body, icon: icon, actions: actions);
+    public Notification(Client client, string id, string package_name, string app_name, string title, string? flag, string? key, string? body, BytesIcon? icon, string[]? actions) {
+        Object(client: client, id: id, package_name: package_name, app_name: app_name, title: title, flag: flag, key: key, body: body, icon: icon, actions: actions);
     }
 
     public void send_dismiss_message() {
@@ -73,7 +73,7 @@ public class Notification : Object {
         Json.Node root = builder.get_root();
         generator.set_root(root);
         string dismiss_message = generator.to_data(null);
-        connection.send_message(dismiss_message);
+        client.send_message(dismiss_message);
     }
 
     public void send_action_message(string s) {
@@ -96,7 +96,7 @@ public class Notification : Object {
         Json.Node root = builder.get_root();
         generator.set_root(root);
         string action_message = generator.to_data(null);
-        connection.send_message(action_message);
+        client.send_message(action_message);
     }
 
     public GLib.Notification to_gnotification() {
