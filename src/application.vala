@@ -105,6 +105,12 @@ public class BluezProfile : Object {
     }
 }
 
+private enum TcpConnectionStatus {
+    DISCONNECTED,
+    CONNECTING,
+    CONNECTED
+}
+
 public class Application : Gtk.Application {
     private Cancellable? cancellable;
     private Connections connections;
@@ -117,6 +123,7 @@ public class Application : Gtk.Application {
     private Window window;
     private List<NotificationApp> _notification_apps;
     private string connect_host;
+    private TcpConnectionStatus tcp_status;
     private TlsCertificate? cert;
 
     private const GLib.ActionEntry[] app_entries = {
@@ -146,6 +153,7 @@ public class Application : Gtk.Application {
         cancellable = new Cancellable();
         cert_created = false;
         first_activation = true;
+        tcp_status = TcpConnectionStatus.DISCONNECTED;
         _notification_apps = new List<NotificationApp>();
     }
 
@@ -311,17 +319,21 @@ public class Application : Gtk.Application {
 
         first_activation = false;
 
-        if (connect_host != null && cert != null) {
+        if (tcp_status == TcpConnectionStatus.DISCONNECTED && connect_host != null && cert != null) {
             var host = connect_host;
             var client = new SocketClient();
+
+            tcp_status = TcpConnectionStatus.CONNECTING;
 
             client.tls = true;
             client.event.connect(on_socket_client_event);
             client.connect_to_host_async.begin(connect_host, 12233, cancellable, (obj, res) => {
                 try {
                     var connection = client.connect_to_host_async.end(res);
+                    tcp_status = TcpConnectionStatus.CONNECTED;
                     connections.add_connection(new Connection(host, connection));
                 } catch (Error e) {
+                    tcp_status = TcpConnectionStatus.DISCONNECTED;
                     warning("Could not connect to server: %s", connect_host);
                 }
             });
