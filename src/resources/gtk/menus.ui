@@ -4,6 +4,10 @@
   <menu id="app-menu">
     <section>
       <item>
+        <attribute name="label" translatable="yes">Show _QR Code</attribute>
+        <attribute name="action">app.show-qrcode</attribute>
+      </item>
+      <item>
         <attribute name="label" translatable="yes">_About</attribute>
         <attribute name="action">app.about</attribute>
       </item>

@@ -120,7 +120,8 @@ public class Application : Gtk.Application {
     private TlsCertificate? cert;
 
     private const GLib.ActionEntry[] app_entries = {
-        { "about", on_about_activate }
+        { "about", on_about_activate },
+        { "show-qrcode", on_show_qrcode_activate }
     };
 
     private const OptionEntry[] options = {
@@ -435,6 +436,10 @@ public class Application : Gtk.Application {
                               "wrap-license", false,
                               "translator-credits", _("translator-credits"),
                               null);
+    }
+
+    private void on_show_qrcode_activate() {
+        show_qrcode();
     }
 
     public void add_notification(Notification notification) {
