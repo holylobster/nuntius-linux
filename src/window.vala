@@ -66,6 +66,10 @@ public class Window : Gtk.ApplicationWindow {
         return base.window_state_event(event);
     }
 
+    protected override bool delete_event(Gdk.EventAny event) {
+        return base.hide_on_delete();
+    }
+
     private void on_selection_changed(NotificationApp? notification_app) {
         if (notification_app == null) {
             titlebar_right.title = null;
