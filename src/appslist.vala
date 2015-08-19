@@ -26,6 +26,7 @@ public class AppsList : Gtk.ListBox {
         private Gtk.Label label;
         [GtkChild]
         private NotificationCounter notification_counter;
+        private Gtk.Menu menu;
 
         private NotificationApp _notification_app;
 
@@ -68,6 +69,17 @@ public class AppsList : Gtk.ListBox {
                 }
             });
         }
+
+        public void show_popup_menu(Gdk.EventButton event) {
+            menu = new Gtk.Menu();
+            var item = new Gtk.MenuItem.with_label (_("Blacklist this application"));
+            item.activate.connect(() => {
+                notification_app.blacklist();
+            });
+            menu.append(item);
+            menu.show_all();
+            menu.popup(null, null, null, event.button, event.get_time());
+        }
     }
 
     private string? filter_text;
@@ -89,6 +101,24 @@ public class AppsList : Gtk.ListBox {
         app.notification_app_added.connect((napp) => {
             var row = new AppRow(napp);
             add(row);
+        });
+
+        button_press_event.connect((event) => {
+            if (event.type == Gdk.EventType.BUTTON_PRESS &&
+                event.button == Gdk.BUTTON_SECONDARY) {
+                print("button press right click\n");
+                unselect_all();
+
+                var row = get_row_at_y((int) event.y) as AppRow;
+                if (row != null) {
+                    select_row(get_row_at_y((int) event.y));
+                    row.show_popup_menu(event);
+                }
+
+                return true;
+            }
+
+            return false;
         });
     }
 
