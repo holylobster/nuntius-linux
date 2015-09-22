@@ -20,6 +20,11 @@ You can install Nuntius from:
 
  * Fedora: yum install nuntius
  * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
+ * Gentoo installation instructions
+   * Copy the ebuild located in `gentoo/gnome-extra/nuntius-9999.ebuild` to your local repository (`/usr/local/portage`)
+   * Build the manifest (`ebuild nuntius-9999.ebuild digest`)
+   * Add `gnome-extra/nuntius ~amd64` or `gnome-extra/nuntius ~x86` to your `package.accept_keywords`
+   * Merge nuntius to your system (`emerge nuntius`)
 
 You will need to install Nuntius also on your phone or tablet.
 
