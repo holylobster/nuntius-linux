@@ -18,7 +18,7 @@ If you have suggestions on how to improve it we are very open... but... we think
 ##Packages
 You can install Nuntius from:
 
- * Fedora: yum install nuntius
+ * Fedora: `dnf install nuntius` (use `yum` instead of `dnf` on Fedora <= 21)
  * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
 
 You will need to install Nuntius also on your phone or tablet.
