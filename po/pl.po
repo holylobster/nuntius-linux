@@ -4,14 +4,14 @@
 # pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
 # gnomepl@aviary.pl
 # -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2015.
-# Aviary.pl <gnomepl@aviary.pl>, 2015.
+# Piotr Drąg <piotrdrag@gmail.com>, 2015-2016.
+# Aviary.pl <gnomepl@aviary.pl>, 2015-2016.
 msgid ""
 msgstr ""
 "Project-Id-Version: nuntius-linux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-22 15:35+0100\n"
-"PO-Revision-Date: 2015-03-22 15:37+0100\n"
+"POT-Creation-Date: 2016-07-09 07:47+0200\n"
+"PO-Revision-Date: 2016-07-09 07:48+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
 "Language-Team: Polish <gnomepl@aviary.pl>\n"
 "Language: pl\n"
@@ -69,11 +69,23 @@ msgstr "Szerokość i wysokość okna"
 msgid "Width and height of the window."
 msgstr "Szerokość i wysokość okna."
 
-#: ../src/application.vala:286 ../src/resources/ui/window.ui.h:1
+#: ../src/application.vala:144
+msgid "Connect to a specific server"
+msgstr "Łączy z podanym serwerem"
+
+#: ../src/application.vala:297
+msgid "Certificate Fingerprint"
+msgstr "Odcisk certyfikatu"
+
+#: ../src/application.vala:300
+msgid "_OK"
+msgstr "_OK"
+
+#: ../src/application.vala:469 ../src/resources/ui/window.ui.h:1
 msgid "Nuntius"
 msgstr "Nuntius"
 
-#: ../src/application.vala:289
+#: ../src/application.vala:472
 msgid ""
 "Deliver notifications from your phone or tablet to your computer over "
 "Bluetooth."
@@ -81,15 +93,23 @@ msgstr ""
 "Wyświetlanie powiadomień z telefonu lub tabletu na komputerze za pomocą "
 "Bluetooth."
 
-#: ../src/application.vala:294
+#: ../src/application.vala:477
 msgid "translator-credits"
 msgstr ""
-"Piotr Drąg <piotrdrag@gmail.com>, 2015\n"
-"Aviary.pl <gnomepl@aviary.pl>, 2015"
+"Piotr Drąg <piotrdrag@gmail.com>, 2015-2016\n"
+"Aviary.pl <gnomepl@aviary.pl>, 2015-2016"
+
+#: ../src/appslist.vala:75
+msgid "Blacklist this application"
+msgstr "Dodaj program do czarnej listy"
 
 #. namespace Nuntius
 #. ex:set ts=4 et:
 #: ../src/resources/gtk/menus.ui.h:1
+msgid "Show _QR Code"
+msgstr "Wyświetl kod _QR"
+
+#: ../src/resources/gtk/menus.ui.h:2
 msgid "_About"
 msgstr "_O programie"
 
@@ -100,3 +120,8 @@ msgstr "Wyszukiwanie"
 #: ../src/resources/ui/window.ui.h:2
 msgid "All Applications"
 msgstr "Wszystkie programy"
+
+#. FIXME: just a test message until we have UI to type the reply
+#: ../src/smsnotification.vala:63
+msgid "Reply"
+msgstr "Odpowiedz"
