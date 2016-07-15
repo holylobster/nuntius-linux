@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: nuntius-linux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-20 16:45+0100\n"
+"POT-Creation-Date: 2016-07-15 17:00+0200\n"
 "PO-Revision-Date: 2015-03-20 18:28+0100\n"
 "Last-Translator: Dušan Kazik <prescott66@gmail.com>\n"
 "Language-Team: \n"
@@ -15,7 +15,6 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.4\n"
 "Plural-Forms: nplurals=3; plural=(n==1) ? 0 : (n>=2 && n<=4) ? 1 : 2;\n"
 
 #: ../data/org.holylobster.nuntius.appdata.xml.in.h:1
@@ -62,7 +61,46 @@ msgstr "Šírka a výška okna"
 msgid "Width and height of the window."
 msgstr "Šírka a výška okna."
 
+#: ../src/application.vala:144
+msgid "Connect to a specific server"
+msgstr ""
+
+#: ../src/application.vala:297
+msgid "Certificate Fingerprint"
+msgstr ""
+
+#: ../src/application.vala:300
+msgid "_OK"
+msgstr ""
+
+#: ../src/application.vala:469 ../src/resources/ui/window.ui.h:1
+msgid "Nuntius"
+msgstr "Nuntius"
+
+#: ../src/application.vala:472
+msgid ""
+"Deliver notifications from your phone or tablet to your computer over "
+"Bluetooth."
+msgstr ""
+"Doručenie oznámení z vášho telefónu alebo tabletu do vášho počítača cez "
+"Bluetooth."
+
+#: ../src/application.vala:477
+msgid "translator-credits"
+msgstr "Dušan Kazik <prescott66@gmail.com>, 2015"
+
+#: ../src/appslist.vala:75
+#, fuzzy
+msgid "Blacklist this application"
+msgstr "Všetky aplikácie"
+
+#. namespace Nuntius
+#. ex:set ts=4 et:
 #: ../src/resources/gtk/menus.ui.h:1
+msgid "Show _QR Code"
+msgstr ""
+
+#: ../src/resources/gtk/menus.ui.h:2
 msgid "_About"
 msgstr "_O programe"
 
@@ -70,10 +108,11 @@ msgstr "_O programe"
 msgid "Type to search"
 msgstr "Text na vyhľadanie"
 
-#: ../src/resources/ui/window.ui.h:1
-msgid "Nuntius"
-msgstr "Nuntius"
-
 #: ../src/resources/ui/window.ui.h:2
 msgid "All Applications"
 msgstr "Všetky aplikácie"
+
+#. FIXME: just a test message until we have UI to type the reply
+#: ../src/smsnotification.vala:63
+msgid "Reply"
+msgstr ""
