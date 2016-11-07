@@ -5,38 +5,113 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: \n"
+"Project-Id-Version: nuntius-linux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-11 11:24+0100\n"
+"POT-Creation-Date: 2016-07-15 17:00+0200\n"
 "PO-Revision-Date: 2015-03-11 18:29+0100\n"
 "Last-Translator: Raphael Guttenberger <raphaelguttenberger@gmail.com>\n"
 "Language-Team: \n"
 "Language: de\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=utf-8\n"
+"Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
 #: ../data/org.holylobster.nuntius.appdata.xml.in.h:1
 msgid ""
 "Nuntius delivers notifications from your phone or tablet to your computer "
 "over Bluetooth."
 msgstr ""
-"Nuntius sendet Benachrichtigungen von deinem Handy oder Tablet direkt an deinen Computer"
-"über Bluetooth."
+"Nuntius sendet Benachrichtigungen von deinem Handy oder Tablet direkt an "
+"deinen Computer über Bluetooth."
+
 #: ../data/org.holylobster.nuntius.appdata.xml.in.h:2
 msgid ""
 "To use Nuntius you will need to install a companion tool on your phone or "
 "tablet and pair it via Bluetooth."
 msgstr ""
-"Um Nuntius zu benutzen, musst du ein Hilfstool auf deinem Handy oder"
-"Tablet installieren und es über Bluetooth mit deinem PC verbinden."
+"Um Nuntius zu benutzen, musst du ein Hilfstool auf deinem Handy oder Tablet "
+"installieren und es über Bluetooth mit deinem PC verbinden."
+
 #: ../data/org.holylobster.nuntius.desktop.in.h:1
 msgid ""
 "Deliver notifications from your phone or tablet to your computer over "
 "Bluetooth"
 msgstr ""
-"Sende Benachrichtigungen von deinem Handy oder Tablet an deinen PC über"
+"Sende Benachrichtigungen von deinem Handy oder Tablet an deinen PC über "
 "Bluetooth"
+
 #: ../data/org.holylobster.nuntius.desktop.in.h:2
 msgid "notifications;"
+msgstr "Benachrichtigungen;"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:1
+msgid "Window state"
 msgstr ""
-"Benachrichtigungen;"
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:2
+msgid "State of the window, e.g. maximized."
+msgstr ""
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:3
+msgid "Window width and height"
+msgstr ""
+
+#: ../data/org.holylobster.nuntius.gschema.xml.in.h:4
+msgid "Width and height of the window."
+msgstr ""
+
+#: ../src/application.vala:144
+msgid "Connect to a specific server"
+msgstr ""
+
+#: ../src/application.vala:297
+msgid "Certificate Fingerprint"
+msgstr ""
+
+#: ../src/application.vala:300
+msgid "_OK"
+msgstr ""
+
+#: ../src/application.vala:469 ../src/resources/ui/window.ui.h:1
+msgid "Nuntius"
+msgstr ""
+
+#: ../src/application.vala:472
+msgid ""
+"Deliver notifications from your phone or tablet to your computer over "
+"Bluetooth."
+msgstr ""
+"Sende Benachrichtigungen von deinem Handy oder Tablet an deinen PC über "
+"Bluetooth."
+
+#: ../src/application.vala:477
+msgid "translator-credits"
+msgstr "Raphael Guttenberger <raphaelguttenberger@gmail.com>, 2015"
+
+#: ../src/appslist.vala:75
+msgid "Blacklist this application"
+msgstr ""
+
+#. namespace Nuntius
+#. ex:set ts=4 et:
+#: ../src/resources/gtk/menus.ui.h:1
+msgid "Show _QR Code"
+msgstr ""
+
+#: ../src/resources/gtk/menus.ui.h:2
+msgid "_About"
+msgstr ""
+
+#: ../src/resources/ui/appslistpanel.ui.h:1
+msgid "Type to search"
+msgstr ""
+
+#: ../src/resources/ui/window.ui.h:2
+msgid "All Applications"
+msgstr ""
+
+#. FIXME: just a test message until we have UI to type the reply
+#: ../src/smsnotification.vala:63
+msgid "Reply"
+msgstr ""

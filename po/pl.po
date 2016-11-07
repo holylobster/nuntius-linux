@@ -1,34 +1,30 @@
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Aviary.pl
-# Jeśli masz jakiekolwiek uwagi odnoszące się do tłumaczenia lub chcesz
-# pomóc w jego rozwijaniu i pielęgnowaniu, napisz do nas:
-# gnomepl@aviary.pl
-# -=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-
-# Piotr Drąg <piotrdrag@gmail.com>, 2015.
-# Aviary.pl <gnomepl@aviary.pl>, 2015.
+# Polish translation for nuntius-linux.
+# Copyright © 2015-2016 the nuntius-linux authors.
+# This file is distributed under the same license as the nuntius-linux package.
+# Piotr Drąg <piotrdrag@gmail.com>, 2015-2016.
+# Aviary.pl <community-poland@mozilla.org>, 2015-2016.
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: nuntius-linux\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-03-22 15:35+0100\n"
-"PO-Revision-Date: 2015-03-22 15:37+0100\n"
+"POT-Creation-Date: 2016-08-29 18:54+0200\n"
+"PO-Revision-Date: 2016-08-29 18:55+0200\n"
 "Last-Translator: Piotr Drąg <piotrdrag@gmail.com>\n"
-"Language-Team: Polish <gnomepl@aviary.pl>\n"
+"Language-Team: Polish <community-poland@mozilla.org>\n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Poedit-Language: Polish\n"
-"X-Poedit-Country: Poland\n"
 
 #: ../data/org.holylobster.nuntius.appdata.xml.in.h:1
 msgid ""
 "Nuntius delivers notifications from your phone or tablet to your computer "
 "over Bluetooth."
 msgstr ""
-"Nuntius wyświetla powiadomienia z telefonu lub tabletu na komputerze za "
+"Nuntius wyświetla powiadomienia z telefonu lub tabletu na komputerze za "
 "pomocą Bluetooth."
 
 #: ../data/org.holylobster.nuntius.appdata.xml.in.h:2
@@ -37,14 +33,14 @@ msgid ""
 "tablet and pair it via Bluetooth."
 msgstr ""
 "Aby użyć programu Nuntius, należy zainstalować uzupełniające narzędzie na "
-"telefonie lub tablecie i połączyć je z komputerem za pomocą Bluetooth."
+"telefonie lub tablecie i połączyć je z komputerem za pomocą Bluetooth."
 
 #: ../data/org.holylobster.nuntius.desktop.in.h:1
 msgid ""
 "Deliver notifications from your phone or tablet to your computer over "
 "Bluetooth"
 msgstr ""
-"Wyświetlanie powiadomień z telefonu lub tabletu na komputerze za pomocą "
+"Wyświetlanie powiadomień z telefonu lub tabletu na komputerze za pomocą "
 "Bluetooth"
 
 #: ../data/org.holylobster.nuntius.desktop.in.h:2
@@ -63,33 +59,53 @@ msgstr "Stan okna, tzn. czy jest zmaksymalizowane."
 
 #: ../data/org.holylobster.nuntius.gschema.xml.in.h:3
 msgid "Window width and height"
-msgstr "Szerokość i wysokość okna"
+msgstr "Szerokość i wysokość okna"
 
 #: ../data/org.holylobster.nuntius.gschema.xml.in.h:4
 msgid "Width and height of the window."
-msgstr "Szerokość i wysokość okna."
+msgstr "Szerokość i wysokość okna."
 
-#: ../src/application.vala:286 ../src/resources/ui/window.ui.h:1
+#: ../src/application.vala:144
+msgid "Connect to a specific server"
+msgstr "Łączy z podanym serwerem"
+
+#: ../src/application.vala:297
+msgid "Certificate Fingerprint"
+msgstr "Odcisk certyfikatu"
+
+#: ../src/application.vala:300
+msgid "_OK"
+msgstr "_OK"
+
+#: ../src/application.vala:469 ../src/resources/ui/window.ui.h:1
 msgid "Nuntius"
 msgstr "Nuntius"
 
-#: ../src/application.vala:289
+#: ../src/application.vala:472
 msgid ""
 "Deliver notifications from your phone or tablet to your computer over "
 "Bluetooth."
 msgstr ""
-"Wyświetlanie powiadomień z telefonu lub tabletu na komputerze za pomocą "
+"Wyświetlanie powiadomień z telefonu lub tabletu na komputerze za pomocą "
 "Bluetooth."
 
-#: ../src/application.vala:294
+#: ../src/application.vala:477
 msgid "translator-credits"
 msgstr ""
-"Piotr Drąg <piotrdrag@gmail.com>, 2015\n"
-"Aviary.pl <gnomepl@aviary.pl>, 2015"
+"Piotr Drąg <piotrdrag@gmail.com>, 2015-2016\n"
+"Aviary.pl <community-poland@mozilla.org>, 2015-2016"
+
+#: ../src/appslist.vala:75
+msgid "Blacklist this application"
+msgstr "Dodaj program do czarnej listy"
 
 #. namespace Nuntius
 #. ex:set ts=4 et:
 #: ../src/resources/gtk/menus.ui.h:1
+msgid "Show _QR Code"
+msgstr "Wyświetl kod _QR"
+
+#: ../src/resources/gtk/menus.ui.h:2
 msgid "_About"
 msgstr "_O programie"
 
@@ -100,3 +116,8 @@ msgstr "Wyszukiwanie"
 #: ../src/resources/ui/window.ui.h:2
 msgid "All Applications"
 msgstr "Wszystkie programy"
+
+#. FIXME: just a test message until we have UI to type the reply
+#: ../src/smsnotification.vala:63
+msgid "Reply"
+msgstr "Odpowiedz"
