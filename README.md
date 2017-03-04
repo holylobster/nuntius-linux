@@ -11,6 +11,10 @@ You will also need to restart your session to auto-start nuntius.
 
 For more information on the project and the companion tools to install on the computer check https://github.com/holylobster
 
+##Requirements
+
+Nuntius will not work without BlueZ 5, which is not currently available in Ubuntu. (You can hijack the Debian packages, although that might lead to other features not working.)
+
 ##The Icon
 You may have questions on the icon. Nice shot.
 In fact most of the Nuntius development time has been spent on the icon design concept.
