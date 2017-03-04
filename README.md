@@ -21,6 +21,7 @@ You can install Nuntius from:
 
  * Fedora: `dnf install nuntius` (use `yum` instead of `dnf` on Fedora <= 21)
  * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
+ * Debian (testing as of early 2016): `sudo apt-get install nuntius`.  Or, if you don't have the testing distribution in your `/etc/apt/sources.list`, see https://tracker.debian.org/pkg/nuntius-linux to download and `sudo dpkg --install` the `nuntius_*.deb` file manually.
 
 You will need to install Nuntius also on your phone or tablet.
 
@@ -40,4 +41,3 @@ Feel free to join and talk to us! Note that the channel is new and there are not
  * /var/log/messages gives also some information about bluetoothd if you do not run it directly
  * run "sudo btmon > btmon.log" to get information from the devices that try to connect to the computer
    * This is very useful to see to which uuid is trying to connect and what kind of errors it gets
-
