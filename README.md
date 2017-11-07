@@ -21,13 +21,14 @@ You can install Nuntius from:
 
  * Fedora: `dnf install nuntius` (use `yum` instead of `dnf` on Fedora <= 21)
  * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
- * Debian (testing as of early 2016): `sudo apt-get install nuntius`.  Or, if you don't have the testing distribution in your `/etc/apt/sources.list`, see https://tracker.debian.org/pkg/nuntius-linux to download and `sudo dpkg --install` the `nuntius_*.deb` file manually.
+ * [Debian](https://packages.debian.org/nuntius) and Debian derivatives: `sudo apt install nuntius`
 
 You will need to install Nuntius also on your phone or tablet.
 
-At the moment Nuntius is available for Android, check here
+At the moment Nuntius is available for Android.
 
- * https://github.com/holylobster/nuntius-android
+ * Nuntius-Android [Development Repository](https://github.com/holylobster/nuntius-android)
+ * Nuntius for Android [on Google Play](https://play.google.com/store/apps/details?id=org.holylobster.nuntius)
 
 ##Getting in touch
 We have an IRC channel: #nuntius on the irc.gnome.org server.
