@@ -29,15 +29,12 @@ public class Notification : Object {
     public string[]? actions { get; construct set; }
     public Connection connection { get; construct set; }
 
-    private bool _read;
+    private bool _read = false;
 
     [CCode (notify = false)]
     public bool read {
         get {
-            if (_read != null) {
-                return _read;
-            }
-            return false; // default value
+            return _read;
         }
         set {
             if (_read != value) {
