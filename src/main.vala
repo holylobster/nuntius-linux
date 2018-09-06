@@ -29,9 +29,9 @@ public static int main(string[] args) {
 
     app = new Nuntius.Application();
 
-    Unix.signal_add(Posix.SIGINT, on_terminate_app);
-    Unix.signal_add(Posix.SIGHUP, on_terminate_app);
-    Unix.signal_add(Posix.SIGTERM, on_terminate_app);
+    Unix.signal_add(Posix.Signal.INT, on_terminate_app);
+    Unix.signal_add(Posix.Signal.HUP, on_terminate_app);
+    Unix.signal_add(Posix.Signal.TERM, on_terminate_app);
 
     return app.run(args);
 }

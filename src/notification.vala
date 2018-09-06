@@ -29,18 +29,19 @@ public class Notification : Object {
     public string[]? actions { get; construct set; }
     public Connection connection { get; construct set; }
 
-    private bool _read;
+    private bool _read = false;
 
     [CCode (notify = false)]
     public bool read {
-        get { return _read; }
+        get {
+            return _read;
+        }
         set {
             if (_read != value) {
                 _read = value;
                 notify_property("read");
             }
         }
-        default = false;
     }
 
     public Notification(Connection connection, string id, string package_name, string app_name, string title, string? flag, string? key, string? body, BytesIcon? icon, string[]? actions) {
