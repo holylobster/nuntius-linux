@@ -35,7 +35,7 @@ public class Notification : Object {
     public bool read {
         get {
             if (_read != null) {
-            return _read;
+                return _read;
             }
             return false; // default value
         }
