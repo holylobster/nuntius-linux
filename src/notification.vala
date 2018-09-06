@@ -33,14 +33,18 @@ public class Notification : Object {
 
     [CCode (notify = false)]
     public bool read {
-        get { return _read; }
+        get {
+            if (_read != null) {
+            return _read;
+            }
+            return false; // default value
+        }
         set {
             if (_read != value) {
                 _read = value;
                 notify_property("read");
             }
         }
-        default = false;
     }
 
     public Notification(Connection connection, string id, string package_name, string app_name, string title, string? flag, string? key, string? body, BytesIcon? icon, string[]? actions) {
