@@ -13,7 +13,7 @@ autostartdir = $(sysconfdir)/xdg/autostart
 autostart_DATA = $(desktop_DATA)
 
 # appdata file
-appdatadir = $(datadir)/appdata
+appdatadir = $(datadir)/metainfo
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
 appdata_in_files = data/org.holylobster.nuntius.appdata.xml.in
 @INTLTOOL_XML_RULE@
