@@ -21,12 +21,14 @@ You can install Nuntius from:
 
  * Fedora: `dnf install nuntius` (use `yum` instead of `dnf` on Fedora <= 21)
  * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
+ * [Debian](https://packages.debian.org/nuntius) and Debian derivatives: `sudo apt install nuntius`
 
 You will need to install Nuntius also on your phone or tablet.
 
-At the moment Nuntius is available for Android, check here
+At the moment Nuntius is available for Android.
 
- * https://github.com/holylobster/nuntius-android
+ * Nuntius-Android [Development Repository](https://github.com/holylobster/nuntius-android)
+ * Nuntius for Android [on Google Play](https://play.google.com/store/apps/details?id=org.holylobster.nuntius)
 
 ## Getting in touch
 We have an IRC channel: #nuntius on the irc.gnome.org server.
@@ -40,4 +42,3 @@ Feel free to join and talk to us! Note that the channel is new and there are not
  * /var/log/messages gives also some information about bluetoothd if you do not run it directly
  * run "sudo btmon > btmon.log" to get information from the devices that try to connect to the computer
    * This is very useful to see to which uuid is trying to connect and what kind of errors it gets
-

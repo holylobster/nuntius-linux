@@ -1,6 +1,6 @@
-AC_PREREQ(2.63)
+AC_PREREQ([2.69])
 
-AC_INIT([nuntius], [0.2.0])
+AC_INIT([nuntius],[0.2.0])
 
 dnl http://people.gnome.org/~walters/docs/build-api.txt
 dnl We don't support separate builddir when building from git
@@ -10,7 +10,7 @@ AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS(config.h)
 AC_CONFIG_SRCDIR(src/main.vala)
 
-AM_INIT_AUTOMAKE([1.11 tar-ustar dist-xz no-dist-gzip foreign])
+AM_INIT_AUTOMAKE([1.11 tar-ustar dist-xz no-dist-gzip foreign subdir-objects -Wall])
 m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 IT_PROG_INTLTOOL([0.50.1])
