@@ -3,8 +3,8 @@
 <component type="desktop-application">
   <id>org.holylobster.nuntius.desktop</id>
   <launchable type="desktop-id">org.holylobster.nuntius.desktop</launchable>
-  <name>Nuntius</name>
-  <summary>Nuntius delivers notifications from your phone or tablet to your computer</summary>
+  <_name>Nuntius</_name>
+  <_summary>Nuntius delivers notifications from your phone or tablet to your computer</_summary>
   <metadata_license>CC0-1.0</metadata_license>
   <project_license>GPL-2.0-or-later</project_license>
   <description>
@@ -19,7 +19,7 @@
   </description>
   <screenshots>
       <screenshot type="default">
-          <caption>Nuntius play store feature</caption>
+          <_caption>Nuntius play store feature</_caption>
           <image type="source" width="1024" height="500">https://raw.githubusercontent.com/holylobster/nuntius-android/master/store-stuff/play-store-feature.jpg</image>
       </screenshot>
   </screenshots>
