@@ -19,8 +19,23 @@ If you have suggestions on how to improve it we are very open... but... we think
 ## Packages
 You can install Nuntius from:
 
- * Fedora: `dnf install nuntius` (use `yum` instead of `dnf` on Fedora <= 21)
- * [Arch Linux (AUR)](https://aur.archlinux.org/packages/nuntius/)
+####Fedora: 
+`dnf install nuntius` (use `yum` instead of `dnf` on Fedora <= 21)
+
+####Arch Linux 
+[Arch User Repository](https://aur.archlinux.org/packages/nuntius/)
+
+####Ubuntu:
+
+```
+$ sudo apt-get install git intltool dh-autoreconf libglib2.0-dev libgtk-3-dev libqrencode-dev libjson-glib-dev valac
+$ git clone https://github.com/holylobster/nuntius-linux.git
+$ cd nuntius-linux
+$ chmod +x autogen.sh
+$ ./autogen.sh
+$ make
+$ sudo make install
+```
 
 You will need to install Nuntius also on your phone or tablet.
 
