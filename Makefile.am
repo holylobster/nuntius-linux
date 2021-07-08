@@ -72,6 +72,8 @@ AM_VALAFLAGS = \
 	--pkg gtk+-3.0 \
 	--pkg json-glib-1.0 \
 	--pkg posix \
+	--pkg avahi-gobject \
+	--pkg avahi-client \
 	--gresources  $(top_srcdir)/src/resources/nuntius.gresource.xml
 
 bin_PROGRAMS = nuntius qrtest
@@ -90,7 +92,8 @@ VALA_SOURCES = \
 	src/application.vala \
 	src/appslistpanel.vala \
 	src/appslist.vala \
-	src/connection.vala \
+	src/client.vala \
+	src/mdns.vala \
 	src/notification.vala \
 	src/notificationapp.vala \
 	src/notificationcounter.vala \

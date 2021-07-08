@@ -34,61 +34,69 @@ public interface BluezProfileManager : Object {
     public abstract void unregister_profile(ObjectPath profile) throws IOError;
 }
 
-public class Connections : Object {
-    private HashTable<string, Connection>? connections;
+public class Clients : Object {
+    private HashTable<string, Client>? clients;
 
     construct {
-        connections = new HashTable<string, Connection>(str_hash, str_equal);
+        clients = new HashTable<string, Client>(str_hash, str_equal);
     }
 
-    public void add_connection(Connection connection) {
-        connections.insert(connection.server_name, connection);
-        connection.notify["connected"].connect(() => {
-            if (!connection.connected) {
-                connections.remove(connection.server_name);
-                print("removed connection for device '%s'\n",
-                      connection.server_name);
-            }
-        });
+    public void add_client(Client client) {
+        clients.insert(client.host, client);
 
-        connection.notification_posted.connect((notification) => {
+        client.notification_posted.connect((notification) => {
             var app = (Application) GLib.Application.get_default();
             app.add_notification(notification);
         });
 
-        connection.sms_received.connect((sms_notification) => {
+        client.sms_received.connect((sms_notification) => {
             var app = (Application) GLib.Application.get_default();
             app.add_sms_notification(sms_notification);
         });
 
-        connection.notification_removed.connect((id, package_name) => {
+        client.notification_removed.connect((id, package_name) => {
             var app = (Application) GLib.Application.get_default();
             app.mark_notification_read(id, package_name);
         });
     }
 
-    public void remove_connection(string server_name) {
-        var connection = connections.lookup(server_name);
-        if (connection != null) {
-            connections.remove(server_name);
+    public HashTable<string, Client>? get_all() {
+        return clients;
+    }
+
+    public void remove_client(string host) {
+        var client = clients.lookup(host);
+        if (client != null) {
+            clients.remove(host);
         }
     }
 
-    public bool is_connected() {
-        return connections.size() > 0;
+    public HashTable<string, Client> get_not_connected() {
+        var to_connect = new HashTable<string, Client>(str_hash, str_equal);
+
+        clients.foreach((host, client) => {
+            if (client.tcp_status != TcpConnectionStatus.CONNECTED) {
+                to_connect.insert(host, client);
+            }
+        });
+        return to_connect;
     }
 
-    public bool get_connected(string server_name) {
-        return connections.get(server_name) != null;
+    public bool is_connected() {
+        return clients.size() > 0;
+    }
+
+    public bool get_connected(string host) {
+        return clients.get(host).tcp_status == TcpConnectionStatus.CONNECTED;
     }
 }
 
 [DBus (name = "org.bluez.Profile1")]
 public class BluezProfile : Object {
-    private Connections connections;
+    private Clients clients;
 
-    public BluezProfile(Connections connections) {
-        this.connections = connections;
+    public BluezProfile(Clients clients) {
+        this.clients = clients;
     }
 
     public void release() {
@@ -97,28 +105,21 @@ public class BluezProfile : Object {
 
     public void new_connection(ObjectPath device, Socket socket, HashTable<string, Variant> fd_properties) {
         print("new_connection method called for device: %s\n", device);
-        var connection = new Connection(device,
-                                        SocketConnection.factory_create_connection(socket));
+        var client = new Client.blue(device, SocketConnection.factory_create_connection(socket));
 
-        connections.add_connection(connection);
+        clients.add_client(client);
     }
 
     public void request_disconnection(ObjectPath device) {
         print("request_disconnection method called for devices: %s\n", device);
 
-        connections.remove_connection(device);
+        clients.remove_client(device);
     }
-}
-
-private enum TcpConnectionStatus {
-    DISCONNECTED,
-    CONNECTING,
-    CONNECTED
 }
 
 public class Application : Gtk.Application {
     private Cancellable? cancellable;
-    private Connections connections;
+    private Clients clients;
     private DBusObjectManager manager;
     private BluezProfileManager? profile_manager;
     private BluezProfile? profile;
@@ -127,10 +128,10 @@ public class Application : Gtk.Application {
     private bool cert_created;
     private Window window;
     private string connect_host;
-    private TcpConnectionStatus tcp_status;
     private TlsCertificate? cert;
     private List<NotificationApp> _notification_apps;
     private List<SmsNotification> sms_notifications;
+    private Mdns mdns;
 
     private const GLib.ActionEntry[] app_entries = {
         { "about", on_about_activate },
@@ -161,7 +162,6 @@ public class Application : Gtk.Application {
         cancellable = new Cancellable();
         cert_created = false;
         first_activation = true;
-        tcp_status = TcpConnectionStatus.DISCONNECTED;
         _notification_apps = new List<NotificationApp>();
     }
 
@@ -198,8 +198,8 @@ public class Application : Gtk.Application {
                                                  css_provider,
                                                  Gtk.STYLE_PROVIDER_PRIORITY_APPLICATION);
 
-        connections = new Connections();
-        profile = new BluezProfile(connections);
+        clients = new Clients();
+        profile = new BluezProfile(clients);
 
         var profile_path = new ObjectPath(get_dbus_object_path() + "/Profile");
 
@@ -294,6 +294,8 @@ public class Application : Gtk.Application {
     }
 
     private void show_qrcode() {
+        ensure_window();
+        window.present();
         var dialog = new Gtk.Dialog.with_buttons(_("Certificate Fingerprint"),
                                                  window,
                                                  Gtk.DialogFlags.MODAL | Gtk.DialogFlags.DESTROY_WITH_PARENT,
@@ -303,6 +305,10 @@ public class Application : Gtk.Application {
         dialog.set_default_size(300, 300);
 
         dialog.response.connect(i => {
+            var to_connect = clients.get_not_connected();
+            to_connect.foreach((host, client) => {
+                tcp_connect(client);
+            });
             window.destroy();
         });
 
@@ -323,31 +329,47 @@ public class Application : Gtk.Application {
             if (cert_created) {
                 show_qrcode();
             }
+        } else {
+            mdns = new Mdns();
+            mdns.new_tcp_client.connect(tcp_connect);
+        }
+
+        if (connect_host != null) {
+            tcp_connect(new Client.lan(connect_host, 12233));
+            connect_host = null;
         }
 
         first_activation = false;
+        base.activate();
+    }
 
-        if (tcp_status == TcpConnectionStatus.DISCONNECTED && connect_host != null && cert != null) {
-            var host = connect_host;
-            var client = new SocketClient();
+    private void tcp_connect(Client client) {
+        if (cert != null) {
+            if (clients.get_all().get(client.host) != null) {
+                client = clients.get_all().get(client.host);
+            } else {
+                clients.add_client(client);
+            }
+            client.tcp_status = TcpConnectionStatus.CONNECTING;
 
-            tcp_status = TcpConnectionStatus.CONNECTING;
-
-            client.tls = true;
-            client.event.connect(on_socket_client_event);
-            client.connect_to_host_async.begin(connect_host, 12233, cancellable, (obj, res) => {
+            var socket_client = new SocketClient();
+            socket_client.tls = true;
+            socket_client.event.connect(on_socket_client_event);
+            socket_client.connect_to_host_async.begin(client.host, client.port, cancellable, (obj, res) => {
                 try {
-                    var connection = client.connect_to_host_async.end(res);
-                    tcp_status = TcpConnectionStatus.CONNECTED;
-                    connections.add_connection(new Connection(host, connection));
+                    var socket = socket_client.connect_to_host_async.end(res);
+                    client.socket = socket;
+                    print("Connected to server: %s \n", client.host);
+                    client.tcp_status = TcpConnectionStatus.CONNECTED;
                 } catch (Error e) {
-                    tcp_status = TcpConnectionStatus.DISCONNECTED;
-                    warning("Could not connect to server: %s", connect_host);
+                    if (e.code == 5) { // Cert not trusted.
+                        show_qrcode();
+                    }
+                    warning("Could not connect to server: %s", client.host);
+                    warning(e.message);
                 }
             });
         }
-
-        base.activate();
     }
 
     private void on_socket_client_event(SocketClientEvent event, SocketConnectable? connectable, IOStream? ios) {
@@ -385,7 +407,7 @@ public class Application : Gtk.Application {
         }
 
         // try to get the device
-        if (name == "org.bluez.Device1" && !connections.get_connected(path)) {
+        if (name == "org.bluez.Device1" && !clients.get_connected(path)) {
             try {
                 BluezDeviceBus device = Bus.get_proxy_sync(BusType.SYSTEM, "org.bluez", path);
 
@@ -421,7 +443,7 @@ public class Application : Gtk.Application {
             }
         }
 
-        if (!connections.is_connected()) {
+        if (!clients.is_connected()) {
             // try to connect to the paired device every few seconds
             connect_devices_id = Timeout.add_seconds(5, on_try_to_connect_devices);
         }
@@ -506,7 +528,7 @@ public class Application : Gtk.Application {
         }
 
         if (!found) {
-            var napp = new NotificationApp(notification.package_name, notification.connection);
+            var napp = new NotificationApp(notification.package_name, notification.client);
             napp.add_notification(notification);
             _notification_apps.prepend(napp);
 

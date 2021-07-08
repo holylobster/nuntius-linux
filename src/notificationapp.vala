@@ -19,7 +19,7 @@ namespace Nuntius {
 
 public class NotificationApp : Object {
     public string id { get; construct set; }
-    public Connection connection { get; construct set; }
+    public Client client { get; construct set; }
     private string _app_name;
     private BytesIcon _icon;
     private uint _unread_notifications;
@@ -41,8 +41,8 @@ public class NotificationApp : Object {
         get { return _notifications; }
     }
 
-    public NotificationApp(string id, Connection connection) {
-        Object(id: id, connection: connection);
+    public NotificationApp(string id, Client client) {
+        Object(id: id, client: client);
     }
 
     construct {
@@ -111,7 +111,7 @@ public class NotificationApp : Object {
         generator.set_root(root);
 
         string blacklist_message = generator.to_data(null);
-        connection.send_message(blacklist_message);
+        client.send_message(blacklist_message);
     }
 }
 
